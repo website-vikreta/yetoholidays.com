@@ -47,8 +47,8 @@ export default async function BookPage({
 
   return (
     <div className="bg-sand-50">
-      <section className="bg-ocean-900 px-5 pb-14 pt-28 sm:px-8 sm:pb-16 sm:pt-32">
-        <div className="mx-auto max-w-6xl">
+      <section className="bg-ocean-900 pb-14 pt-28 sm:pb-16 sm:pt-32">
+        <div className="mx-auto max-w-6xl px-5 sm:px-8">
           <span className="inline-block text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-sand-300">
             Book now
           </span>

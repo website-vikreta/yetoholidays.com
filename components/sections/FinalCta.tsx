@@ -9,15 +9,18 @@ export default function FinalCta() {
   return (
     <section
       id="contact"
+      data-scroll="through"
       className="relative flex min-h-[60svh] w-full scroll-mt-24 items-center justify-center overflow-hidden"
     >
-      <SmartImage
-        src={EXPERIENCE_IMAGES.travellers}
-        alt="Travellers watching the sunset on a holiday"
-        className="absolute inset-0 h-full w-full"
-        sizes="100vw"
-        overlay="strong"
-      />
+      <div className="fx-zoom-out absolute inset-0">
+        <SmartImage
+          src={EXPERIENCE_IMAGES.travellers}
+          alt="Travellers watching the sunset on a holiday"
+          className="h-full w-full"
+          sizes="100vw"
+          overlay="strong"
+        />
+      </div>
 
       <div className="reveal relative z-10 mx-auto flex max-w-2xl flex-col items-center px-5 py-20 text-center text-white sm:px-8">
         <h2 className="font-display text-3xl leading-[1.1] tracking-tight sm:text-4xl lg:text-5xl">

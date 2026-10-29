@@ -96,7 +96,7 @@ export default function Footer() {
             <h3 className="text-xs font-semibold uppercase tracking-[0.28em] text-sand-400">
               Destinations
             </h3>
-            <ul className="mt-5 space-y-3">
+            <ul className="mt-5 grid grid-cols-2 gap-x-6 gap-y-3">
               {destinations.map((destination) => (
                 <li key={destination.slug}>
                   <Link

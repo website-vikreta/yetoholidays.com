@@ -1,3 +1,4 @@
+import Logo from "@/components/Logo";
 import SmartImage from "@/components/SmartImage";
 import { EXPERIENCE_IMAGES } from "@/lib/data";
 
@@ -23,18 +24,27 @@ export default function YetoExperience() {
   return (
     <section id="experiences" className="bg-white">
       {/* Full-bleed signature moment */}
-      <div className="reveal relative flex h-[70svh] min-h-[420px] w-full items-center justify-center overflow-hidden sm:h-[80svh]">
-        <SmartImage
-          src={EXPERIENCE_IMAGES.signboard}
-          alt="A wooden signpost at a mountain trailhead"
-          className="absolute inset-0 h-full w-full"
-          sizes="100vw"
-          overlay="strong"
-        />
+      <div
+        data-scroll="through"
+        className="reveal relative flex h-[70svh] min-h-[420px] w-full items-center justify-center overflow-hidden sm:h-[80svh]"
+      >
+        <div className="fx-zoom-out absolute inset-0">
+          <SmartImage
+            src={EXPERIENCE_IMAGES.signboard}
+            alt="A wooden signpost at a mountain trailhead"
+            className="h-full w-full"
+            sizes="100vw"
+            overlay="strong"
+          />
+        </div>
         <div className="relative z-10 flex flex-col items-center px-6 text-center text-white">
           <span className="h-px w-16 bg-sand-300 sm:w-24" aria-hidden />
-          <h2 className="mt-6 font-display text-[clamp(3rem,14vw,8rem)] font-medium leading-none tracking-[0.2em]">
-            YETO
+          <h2 className="mt-6">
+            <Logo
+              light
+              className="h-16 sm:h-24 lg:h-32"
+              sizes="(max-width: 640px) 200px, (max-width: 1024px) 300px, 400px"
+            />
           </h2>
           <span className="mt-6 h-px w-16 bg-sand-300 sm:w-24" aria-hidden />
           <p className="mt-6 max-w-md font-display text-lg italic text-white/85 sm:text-xl">

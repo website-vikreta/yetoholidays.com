@@ -32,8 +32,8 @@ export default function PlanPage() {
   return (
     <div className="bg-sand-50">
       {/* Hero */}
-      <section className="bg-ocean-900 px-5 pb-14 pt-28 sm:px-8 sm:pb-16 sm:pt-32">
-        <div className="mx-auto max-w-6xl">
+      <section className="bg-ocean-900 pb-14 pt-28 sm:pb-16 sm:pt-32">
+        <div className="mx-auto max-w-6xl px-5 sm:px-8">
           <span className="inline-block text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-sand-300">
             Plan my trip
           </span>
@@ -46,8 +46,8 @@ export default function PlanPage() {
         </div>
       </section>
 
-      <section className="px-5 py-12 sm:px-8 sm:py-16">
-        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 lg:grid-cols-[1fr_360px] lg:gap-14">
+      <section className="py-12 sm:py-16">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 px-5 sm:px-8 gap-10 lg:grid-cols-[1fr_360px] lg:gap-14">
           <Suspense
             fallback={
               <div className="rounded-2xl border border-ocean-900/10 bg-white p-8 text-sm text-ocean-800/60">
