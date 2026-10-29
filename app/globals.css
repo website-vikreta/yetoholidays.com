@@ -1,0 +1,123 @@
+@import "tailwindcss";
+
+@theme {
+  /* Yeto brand — deep ocean blue + sand/beige + white */
+  --color-ocean-50: #f0f7fb;
+  --color-ocean-100: #dbecf6;
+  --color-ocean-200: #bcdcee;
+  --color-ocean-300: #8dc4e0;
+  --color-ocean-400: #57a4cc;
+  --color-ocean-500: #3487b5;
+  --color-ocean-600: #256c99;
+  --color-ocean-700: #1f567c;
+  --color-ocean-800: #1e4967;
+  --color-ocean-900: #0e2f45;
+  --color-ocean-950: #0a1f2e;
+
+  --color-sand-50: #fbf8f3;
+  --color-sand-100: #f5eee1;
+  --color-sand-200: #ead9c2;
+  --color-sand-300: #ddc19b;
+  --color-sand-400: #cea472;
+  --color-sand-500: #c48d55;
+  --color-sand-600: #b6774a;
+  --color-sand-700: #975f3f;
+  --color-sand-800: #7b4e38;
+  --color-sand-900: #654130;
+
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #0e2f45;
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* The header is fixed, so in-page anchors need to clear it. */
+[id] {
+  scroll-margin-top: 6rem;
+}
+
+/* Reveal-on-scroll.
+   Progressive enhancement: content is visible by default, so it still renders
+   with JavaScript disabled or if hydration fails. The inline script in the
+   layout sets `data-js` on <html> before first paint, and only then do these
+   blocks start hidden and animate in.
+   `will-change` is deliberately omitted — promoting every reveal block to its
+   own compositor layer for the life of the page costs more than it buys. */
+:root[data-js] .reveal {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+:root[data-js] .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root[data-js] .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Every photo sits on a brand gradient. If a remote image 404s, hide the
+   broken-image glyph and alt text so the gradient stands in cleanly — this is
+   the CSS-only replacement for gating visibility on a JS onLoad handler. */
+img {
+  color: transparent;
+  font-size: 0;
+}
+
+/* Horizontal snap rails used by the mobile-first card carousels */
+.snap-rail {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.snap-rail::-webkit-scrollbar {
+  display: none;
+}
+
+::selection {
+  background: var(--color-ocean-900);
+  color: #ffffff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-ocean-600);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
