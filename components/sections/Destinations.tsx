@@ -8,25 +8,17 @@ import {
   type Destination,
 } from "@/lib/data";
 
-function DestinationCard({
-  destination,
-  large = false,
-}: {
-  destination: Destination;
-  large?: boolean;
-}) {
+function DestinationCard({ destination }: { destination: Destination }) {
   const pkg = leadPackage(destination);
   return (
     <Link
       href={`/destinations/${destination.slug}`}
-      className={`group relative flex min-w-[78%] snap-center flex-col overflow-hidden rounded-2xl bg-ocean-900 shadow-md shadow-ocean-950/10 transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-ocean-950/20 sm:min-w-0 ${
-        large ? "lg:row-span-2" : ""
-      }`}
+      className="group relative flex min-w-[78%] snap-center flex-col overflow-hidden rounded-2xl bg-ocean-900 shadow-md shadow-ocean-950/10 transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-ocean-950/20 sm:min-w-0"
     >
       <SmartImage
         src={destination.images}
         alt={`${destination.name}, ${destination.country}`}
-        className={`w-full aspect-[4/5] ${large ? "lg:h-full lg:aspect-auto" : ""}`}
+        className="aspect-[4/5] w-full sm:aspect-[4/3]"
         imageClassName="transition-transform duration-500 ease-out group-hover:scale-105"
         overlay="bottom"
         sizes="(max-width: 640px) 80vw, (max-width: 1024px) 50vw, 33vw"
@@ -58,21 +50,15 @@ function DestinationCard({
 export default function Destinations() {
   return (
     <Section id="destinations">
-      <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-        <SectionHeading
-          eyebrow="Destinations"
-          title="Where do you want to go?"
-          intro="Six routes to start with, ready to be tailored into your holiday."
-        />
-      </div>
+      <SectionHeading
+        eyebrow="Destinations"
+        title="Where do you want to go?"
+        intro="Six routes to start with, ready to be tailored into your holiday."
+      />
 
-      <div className="reveal -mx-5 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 sm:mx-0 sm:grid sm:snap-none sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:px-0 lg:grid-cols-3 lg:auto-rows-[220px]">
-        {featuredDestinations.map((destination, index) => (
-          <DestinationCard
-            key={destination.slug}
-            destination={destination}
-            large={index === 0}
-          />
+      <div className="reveal -mx-5 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 sm:mx-0 sm:grid sm:snap-none sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:px-0 lg:grid-cols-3">
+        {featuredDestinations.map((destination) => (
+          <DestinationCard key={destination.slug} destination={destination} />
         ))}
       </div>
 

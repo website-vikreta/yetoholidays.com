@@ -93,6 +93,58 @@ body {
   }
 }
 
+/* Scroll effects. ScrollFX sets --p (0 to 1) on [data-scroll] elements; with no
+   JS or reduced motion it is unset, so every fallback below is the static state. */
+.fx-zoom-in {
+  transform: scale(calc(1 + var(--p, 0) * 0.25));
+  transform-origin: 50% 85%;
+}
+
+.fx-zoom-out {
+  transform: scale(calc(1.14 - var(--p, 0) * 0.14));
+}
+
+.fx-drift-up {
+  transform: translateY(calc(var(--p, 0) * 70px));
+  opacity: calc(1 - var(--p, 0) * 1.5);
+}
+
+.fx-fade-out {
+  opacity: calc(1 - var(--p, 0) * 5);
+}
+
+/* Soft sun haze that carries the hero photo into the white page below. */
+.fx-sun-haze {
+  background:
+    radial-gradient(
+      55% 100% at 50% 100%,
+      rgb(255 238 196 / 0.95) 0%,
+      rgb(255 214 150 / 0.6) 30%,
+      rgb(255 196 130 / 0.2) 55%,
+      transparent 75%
+    ),
+    linear-gradient(
+      to top,
+      #fff 0%,
+      rgb(255 255 255 / 0.85) 22%,
+      rgb(255 255 255 / 0) 100%
+    );
+}
+
+/* Hero flight route. Drawn in full without JS; with JS it starts hidden and
+   FlightPath draws it (instantly, in its final state, under reduced motion). */
+.flight-line {
+  stroke-dasharray: 1 1;
+}
+
+:root[data-js] .flight-line {
+  stroke-dashoffset: 1;
+}
+
+:root[data-js] .flight-plane {
+  opacity: 0;
+}
+
 /* Every photo sits on a brand gradient. If a remote image 404s, hide the
    broken-image glyph and alt text so the gradient stands in cleanly — this is
    the CSS-only replacement for gating visibility on a JS onLoad handler. */
