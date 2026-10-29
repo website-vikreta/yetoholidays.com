@@ -1,0 +1,1 @@
+- Client content that has not been supplied defaults to hidden or a clearly marked placeholder, never invented.
