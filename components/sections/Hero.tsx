@@ -11,14 +11,17 @@ const TRUST_POINTS = [
 
 export default function Hero() {
   return (
-    <section className="relative flex min-h-[92svh] w-full flex-col overflow-hidden bg-ocean-950">
+    <section
+      data-scroll="out"
+      className="relative flex min-h-[100svh] w-full flex-col overflow-hidden bg-ocean-950"
+    >
       {/* Keyframes for the background's slow Ken-Burns zoom. The global
           prefers-reduced-motion rule in app/globals.css already forces every
           animation-duration to ~0, so no extra guard is needed here. */}
       <style>{`@keyframes hero-zoom { 0% { transform: scale(1); } 100% { transform: scale(1.09); } }`}</style>
 
-      {/* Background photo with a slow Ken-Burns zoom */}
-      <div className="absolute inset-0">
+      {/* Background photo: slow Ken-Burns zoom, plus a zoom-in as the page scrolls */}
+      <div className="fx-zoom-in absolute inset-0">
         <SmartImage
           src={HERO_IMAGES}
           alt="Traveller looking out over a scenic coastline at golden hour"
@@ -31,12 +34,12 @@ export default function Hero() {
         {/* Extra scrim so the headline stays readable on any photo */}
         <div
           aria-hidden
-          className="absolute inset-0 bg-gradient-to-t from-ocean-950 via-ocean-950/30 to-ocean-950/10"
+          className="absolute inset-0 bg-gradient-to-t from-ocean-950/45 via-transparent to-ocean-950/15"
         />
       </div>
 
       {/* Main content */}
-      <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-5 pt-28 pb-16 text-center sm:px-8 lg:items-start lg:pt-32 lg:text-left">
+      <div className="fx-drift-up relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-5 pt-28 pb-16 text-center sm:px-8 lg:items-start lg:pt-32 lg:text-left">
         <span className="inline-flex items-center rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/85 backdrop-blur">
           International &amp; domestic holidays
         </span>
@@ -66,7 +69,7 @@ export default function Hero() {
       </div>
 
       {/* Trust strip */}
-      <div className="relative z-10 border-t border-white/15 py-4">
+      <div className="relative z-10 border-t border-white/15 bg-ocean-950/35 py-4 backdrop-blur-sm">
         {/* A dot leads every item, so hiding items on small screens can never
             leave a dangling divider. */}
         <ul className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-5 gap-y-2 px-5 sm:px-8 lg:justify-start">
@@ -87,8 +90,16 @@ export default function Hero() {
         </ul>
       </div>
 
+      {/* Blend zone: the photo blurs and fades through a warm sun haze into the
+          white page below. It sits under the trust strip, so the strip's text
+          keeps its dark backing. */}
+      <div aria-hidden className="relative h-32 sm:h-40">
+        <div className="absolute inset-0 backdrop-blur-xl [mask-image:linear-gradient(to_top,black,transparent)]" />
+        <div className="fx-sun-haze absolute inset-0" />
+      </div>
+
       {/* Scroll cue */}
-      <div className="pointer-events-none absolute bottom-24 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2 text-white/60 sm:flex lg:bottom-28">
+      <div className="fx-fade-out pointer-events-none absolute bottom-52 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2 text-white/60 sm:flex">
         <span className="text-[0.65rem] font-semibold uppercase tracking-[0.3em]">
           Scroll
         </span>
