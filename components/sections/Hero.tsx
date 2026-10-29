@@ -36,7 +36,7 @@ export default function Hero() {
       </div>
 
       {/* Main content */}
-      <div className="relative z-10 flex flex-1 flex-col items-center justify-center px-5 pt-28 pb-16 text-center sm:px-8 lg:items-start lg:px-16 lg:pt-32 lg:text-left">
+      <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-5 pt-28 pb-16 text-center sm:px-8 lg:items-start lg:pt-32 lg:text-left">
         <span className="inline-flex items-center rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/85 backdrop-blur">
           International &amp; domestic holidays
         </span>
@@ -66,10 +66,10 @@ export default function Hero() {
       </div>
 
       {/* Trust strip */}
-      <div className="relative z-10 border-t border-white/15 px-5 py-4 sm:px-8 lg:px-16">
+      <div className="relative z-10 border-t border-white/15 py-4">
         {/* A dot leads every item, so hiding items on small screens can never
             leave a dangling divider. */}
-        <ul className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-5 gap-y-2 lg:justify-start">
+        <ul className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-5 gap-y-2 px-5 sm:px-8 lg:justify-start">
           {TRUST_POINTS.map((point) => (
             <li
               key={point.label}
