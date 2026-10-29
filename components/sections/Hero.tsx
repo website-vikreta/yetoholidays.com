@@ -1,3 +1,4 @@
+import FlightPath from "@/components/FlightPath";
 import SmartImage from "@/components/SmartImage";
 import { ButtonLink } from "@/components/ui";
 import { HERO_IMAGES, destinations } from "@/lib/data";
@@ -62,9 +63,18 @@ export default function Hero() {
           <ButtonLink href="/destinations" variant="white" size="lg">
             Explore Destinations
           </ButtonLink>
-          <ButtonLink href="/plan" variant="ghostLight" size="lg">
-            Plan My Trip
-          </ButtonLink>
+          {/* The flight route starts at this button's right edge. */}
+          <div className="relative">
+            <ButtonLink
+              href="/plan"
+              variant="ghostLight"
+              size="lg"
+              className="w-full sm:w-auto"
+            >
+              Plan My Trip
+            </ButtonLink>
+            <FlightPath />
+          </div>
         </div>
       </div>
 
@@ -99,7 +109,7 @@ export default function Hero() {
       </div>
 
       {/* Scroll cue */}
-      <div className="fx-fade-out pointer-events-none absolute bottom-52 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2 text-white/60 sm:flex">
+      <div className="fx-fade-out pointer-events-none absolute bottom-52 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2 text-white/60 sm:flex lg:left-auto lg:right-[max(2rem,calc((100vw-1152px)/2+2rem))] lg:translate-x-0">
         <span className="text-[0.65rem] font-semibold uppercase tracking-[0.3em]">
           Scroll
         </span>

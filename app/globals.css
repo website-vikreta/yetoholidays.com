@@ -131,6 +131,20 @@ body {
     );
 }
 
+/* Hero flight route. Drawn in full without JS; with JS it starts hidden and
+   FlightPath draws it (instantly, in its final state, under reduced motion). */
+.flight-line {
+  stroke-dasharray: 1 1;
+}
+
+:root[data-js] .flight-line {
+  stroke-dashoffset: 1;
+}
+
+:root[data-js] .flight-plane {
+  opacity: 0;
+}
+
 /* Every photo sits on a brand gradient. If a remote image 404s, hide the
    broken-image glyph and alt text so the gradient stands in cleanly — this is
    the CSS-only replacement for gating visibility on a JS onLoad handler. */
