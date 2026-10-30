@@ -56,16 +56,20 @@ const DESKTOP_PATH =
 const MOBILE_PATH =
   "M32 0 L32 88 C60 118 60 234 32 264 C4 294 4 410 32 440 C60 470 60 586 32 616 L32 704";
 
-/** Lights up (opacity 0.4 to 1) as the plane passes: --p is the plane's progress. */
-const stopStyle = (i: number) =>
-  ({
-    "--at": (0.125 + i * 0.25).toFixed(3),
-    opacity: "clamp(0.4, calc(0.4 + (var(--p, 1) - var(--at) + 0.05) * 30), 1)",
-  }) as React.CSSProperties;
+/** Where on the route (0 to 1) each stop sits. */
+const at = (i: number) => 0.125 + i * 0.25;
 
-function Dot({ icon }: { icon: string }) {
+/**
+ * Lights up as the plane passes: --p is the plane's progress. The circle goes
+ * from 0.4 to 1. The text only goes from 0.72 to 1, because ocean-900 text
+ * below that drops under 4.5 to 1 contrast on the page background.
+ */
+const lit = (i: number, from: number) =>
+  `clamp(${from}, calc(${from} + (var(--p, 1) - ${at(i).toFixed(3)} + 0.05) * 30), 1)`;
+
+function Dot({ icon, i }: { icon: string; i: number }) {
   return (
-    <span className="flex h-12 w-12 items-center justify-center rounded-full bg-ocean-900 text-white ring-4 ring-white">
+    <span style={{ opacity: lit(i, 0.4) }} className="flex h-12 w-12 items-center justify-center rounded-full bg-ocean-900 text-white ring-4 ring-white">
       {ICONS[icon]}
     </span>
   );
@@ -89,14 +93,14 @@ export default function WhyYeto() {
             <li
               key={item.title}
               className="relative grid h-[240px] grid-cols-[1fr_240px_1fr] items-center"
-              style={stopStyle(i)}
+              
             >
-              <div className={i % 2 === 0 ? "col-start-1 pr-6 text-right" : "col-start-3 pl-6"}>
+              <div style={{ opacity: lit(i, 0.72) }} className={i % 2 === 0 ? "col-start-1 pr-6 text-right" : "col-start-3 pl-6"}>
                 <h3 className="font-display text-2xl text-ocean-900">{item.title}</h3>
-                <p className="mt-2 text-[0.95rem] leading-relaxed text-ocean-800/80">{item.body}</p>
+                <p className="mt-2 text-[0.95rem] leading-relaxed text-ocean-900">{item.body}</p>
               </div>
               <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                <Dot icon={item.icon} />
+                <Dot icon={item.icon} i={i} />
               </span>
             </li>
           ))}
@@ -113,13 +117,13 @@ export default function WhyYeto() {
       >
         <ol className="relative">
           {whyYeto.map((item, i) => (
-            <li key={item.title} className="relative flex h-[176px] items-center pl-24" style={stopStyle(i)}>
+            <li key={item.title} className="relative flex h-[176px] items-center pl-24" >
               <span className="absolute left-2 top-1/2 -translate-y-1/2">
-                <Dot icon={item.icon} />
+                <Dot icon={item.icon} i={i} />
               </span>
-              <div>
+              <div style={{ opacity: lit(i, 0.72) }}>
                 <h3 className="font-display text-xl text-ocean-900">{item.title}</h3>
-                <p className="mt-1.5 text-[0.95rem] leading-relaxed text-ocean-800/80">{item.body}</p>
+                <p className="mt-1.5 text-[0.95rem] leading-relaxed text-ocean-900">{item.body}</p>
               </div>
             </li>
           ))}
