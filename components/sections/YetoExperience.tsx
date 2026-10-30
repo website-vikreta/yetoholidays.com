@@ -1,107 +1,70 @@
-import Logo from "@/components/Logo";
+import Parallax from "@/components/motion/Parallax";
 import SmartImage from "@/components/SmartImage";
+import { Section, SectionHeading } from "@/components/ui";
 import { EXPERIENCE_IMAGES } from "@/lib/data";
 
-const TILES = [
+const ARCHES = [
   {
+    id: "families",
     images: EXPERIENCE_IMAGES.travellers,
     caption: "Families",
     body: "Itineraries paced for every age, from grandparents to toddlers.",
   },
   {
+    id: "groups",
     images: EXPERIENCE_IMAGES.group,
     caption: "Group departures",
     body: "Fixed dates with a Yeto tour manager travelling alongside you.",
   },
   {
+    id: "honeymoons",
     images: EXPERIENCE_IMAGES.honeymoon,
     caption: "Honeymoons",
-    id: "honeymoons",
     body: "A slower pace and time for just the two of you.",
+  },
+  {
+    id: "corporate",
+    images: EXPERIENCE_IMAGES.corporate,
+    caption: "Corporate",
+    body: "Team offsites, incentive trips and conferences. Tell us the headcount and dates, and we plan the venue, travel and transfers.",
   },
 ];
 
+// Each arch drifts at its own speed, so they separate as you scroll.
+const SPEEDS = [0.04, 0.1, 0.06, 0.12];
+// Vertical stagger on desktop, in px.
+const OFFSETS = ["lg:pt-0", "lg:pt-12", "lg:pt-4", "lg:pt-16"];
+
 export default function YetoExperience() {
   return (
-    <section id="experiences" className="bg-white">
-      {/* Full-bleed signature moment */}
-      <div
-        data-scroll="through"
-        className="reveal relative flex h-[70svh] min-h-[420px] w-full items-center justify-center overflow-hidden sm:h-[80svh]"
-      >
-        <div className="fx-zoom-out absolute inset-0">
-          <SmartImage
-            src={EXPERIENCE_IMAGES.landscape}
-            alt=""
-            className="h-full w-full"
-            sizes="100vw"
-            overlay="strong"
-          />
-        </div>
-        <div className="relative z-10 flex flex-col items-center px-6 text-center text-white">
-          <h2>
-            <Logo
-              light
-              className="h-16 sm:h-24 lg:h-32"
-              sizes="(max-width: 640px) 200px, (max-width: 1024px) 300px, 400px"
-            />
-          </h2>
-        </div>
-      </div>
+    <Section id="experiences">
+      <SectionHeading title="Who we plan for" />
 
-      {/* Experience tiles */}
-      <div className="mx-auto w-full max-w-6xl px-5 pt-14 sm:px-8 sm:pt-20">
-        <h2 className="reveal font-display text-3xl leading-[1.15] tracking-tight text-ocean-900 sm:text-4xl">
-          Who we plan for
-        </h2>
-      </div>
-      <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-5 px-5 py-10 sm:grid-cols-3 sm:px-8 sm:pb-20">
-        {TILES.map((tile, i) => (
-          <div
-            key={tile.caption}
-            id={"id" in tile ? tile.id : undefined}
-            className="reveal group relative overflow-hidden rounded-2xl"
-            style={{ transitionDelay: `${i * 70}ms` }}
-          >
-            <SmartImage
-              src={tile.images}
-              alt={tile.caption}
-              className="aspect-[4/3] w-full rounded-2xl sm:aspect-[4/5]"
-              imageClassName="transition-transform duration-500 ease-out group-hover:scale-105"
-              overlay="bottom"
-              sizes="(max-width: 640px) 100vw, 33vw"
-            />
-            {/* Anchored to the image rather than pulled up with a negative
-                margin, so a two-line caption can never clip. */}
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 p-5 text-white">
-              <h3 className="font-display text-xl">{tile.caption}</h3>
-              <p className="mt-1 text-sm text-white/80">{tile.body}</p>
-            </div>
+      <div className="mt-14 grid grid-cols-2 gap-x-4 gap-y-12 lg:grid-cols-4 lg:gap-x-6">
+        {ARCHES.map((arch, i) => (
+          <div key={arch.id} id={arch.id} className={OFFSETS[i]}>
+            <Parallax speed={SPEEDS[i]}>
+              <figure className="reveal">
+                <div className="relative aspect-[3/5] overflow-hidden rounded-t-[999px] rounded-b-3xl bg-ocean-100">
+                  <Parallax speed={0.1} className="absolute inset-x-0 -inset-y-[10%]">
+                    <SmartImage
+                      src={arch.images}
+                      alt=""
+                      className="h-full w-full"
+                      sizes="(max-width: 1024px) 50vw, 280px"
+                    />
+                  </Parallax>
+                </div>
+                <figcaption className="mt-5">
+                  <span aria-hidden="true" className="block w-12 border-t-2 border-dashed border-ocean-900/30" />
+                  <h3 className="mt-3 font-display text-xl text-ocean-900 sm:text-2xl">{arch.caption}</h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-ocean-800/80">{arch.body}</p>
+                </figcaption>
+              </figure>
+            </Parallax>
           </div>
         ))}
       </div>
-
-      {/* Corporate travel anchor */}
-      <div
-        id="corporate"
-        className="reveal mx-auto flex w-full max-w-6xl scroll-mt-24 flex-col gap-6 px-5 pb-16 sm:flex-row sm:items-center sm:px-8 sm:pb-24"
-      >
-        <SmartImage
-          src={EXPERIENCE_IMAGES.corporate}
-          alt="A corporate group on an offsite trip"
-          className="aspect-[16/10] w-full rounded-2xl sm:w-1/2"
-          sizes="(max-width: 640px) 100vw, 50vw"
-        />
-        <div className="sm:w-1/2">
-          <h3 className="font-display text-2xl text-ocean-900 sm:text-3xl">
-            Corporate travel
-          </h3>
-          <p className="mt-3 text-[0.95rem] leading-relaxed text-ocean-800/70">
-            Team offsites, incentive trips and conferences. Tell us the
-            headcount and dates, and we plan the venue, travel and transfers.
-          </p>
-        </div>
-      </div>
-    </section>
+    </Section>
   );
 }
