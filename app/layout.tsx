@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Plus_Jakarta_Sans } from "next/font/google";
+import { DM_Mono, Fraunces, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -25,6 +25,15 @@ const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   display: "swap",
   preload: true,
+});
+
+// Small monospace label for ticket fields only (DESTINATION, FROM, PER PERSON).
+const dmMono = DM_Mono({
+  variable: "--font-dm-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  display: "swap",
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -73,7 +82,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${jakarta.variable}`}>
+    <html lang="en" className={`${fraunces.variable} ${jakarta.variable} ${dmMono.variable}`}>
       <head>
         {/* Runs before first paint, and is the only inline script on the page.
             1. Marks that scripting is available, so scroll-reveal blocks start

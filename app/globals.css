@@ -173,3 +173,115 @@ img {
   outline-offset: 3px;
   border-radius: 4px;
 }
+
+/* ---------- Ticket (boarding pass) ---------- */
+.ticket-wrap {
+  filter: drop-shadow(0 14px 22px rgb(14 47 69 / 0.16));
+  border-radius: 20px;
+}
+.ticket-link:focus-visible {
+  outline: 2px solid var(--color-ocean-600);
+  outline-offset: 3px;
+}
+
+.ticket {
+  --r: 14px; /* notch radius */
+  --cut: 70%; /* where the perforation sits */
+  --stub-h: 8.5rem; /* phones: stub height, sits below the main part */
+  --ticket-bg: #fff;
+  --ticket-stub-bg: var(--color-sand-50);
+  --ticket-ink: var(--color-ocean-900);
+  --ticket-line: rgb(14 47 69 / 0.22);
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--cut) 1fr;
+  overflow: hidden;
+  background: var(--ticket-bg);
+  color: var(--ticket-ink);
+  border-radius: 20px;
+  -webkit-mask:
+    radial-gradient(circle var(--r) at var(--cut) 0, #0000 98%, #000) top / 100% 51% no-repeat,
+    radial-gradient(circle var(--r) at var(--cut) 100%, #0000 98%, #000) bottom / 100% 51% no-repeat;
+  mask:
+    radial-gradient(circle var(--r) at var(--cut) 0, #0000 98%, #000) top / 100% 51% no-repeat,
+    radial-gradient(circle var(--r) at var(--cut) 100%, #0000 98%, #000) bottom / 100% 51% no-repeat;
+}
+.ticket::after {
+  /* the perforation */
+  content: "";
+  position: absolute;
+  top: var(--r);
+  bottom: var(--r);
+  left: var(--cut);
+  border-left: 2px dashed var(--ticket-line);
+  pointer-events: none;
+}
+.ticket-main {
+  min-width: 0;
+}
+.ticket-stub {
+  min-width: 0;
+  background: var(--ticket-stub-bg);
+}
+.ticket-sand {
+  --ticket-bg: var(--color-sand-100);
+  --ticket-stub-bg: var(--color-sand-200);
+}
+.ticket-ocean {
+  --ticket-bg: var(--color-ocean-900);
+  --ticket-stub-bg: var(--color-ocean-800);
+  --ticket-ink: #fff;
+  --ticket-line: rgb(255 255 255 / 0.35);
+}
+
+/* Long strip: half-circle notches at both ends, no perforation */
+.ticket-long {
+  display: block;
+  -webkit-mask:
+    radial-gradient(circle var(--r) at 0 50%, #0000 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle var(--r) at 100% 50%, #0000 98%, #000) right / 51% 100% no-repeat;
+  mask:
+    radial-gradient(circle var(--r) at 0 50%, #0000 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle var(--r) at 100% 50%, #0000 98%, #000) right / 51% 100% no-repeat;
+}
+.ticket-long::after {
+  display: none;
+}
+
+/* Phones: the stub drops below the main part and the perforation turns horizontal */
+@media (max-width: 639px) {
+  .ticket:not(.ticket-long) {
+    --cut: calc(100% - var(--stub-h));
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr var(--stub-h);
+    -webkit-mask:
+      radial-gradient(circle var(--r) at 0 var(--cut), #0000 98%, #000) left / 51% 100% no-repeat,
+      radial-gradient(circle var(--r) at 100% var(--cut), #0000 98%, #000) right / 51% 100% no-repeat;
+    mask:
+      radial-gradient(circle var(--r) at 0 var(--cut), #0000 98%, #000) left / 51% 100% no-repeat,
+      radial-gradient(circle var(--r) at 100% var(--cut), #0000 98%, #000) right / 51% 100% no-repeat;
+  }
+  .ticket:not(.ticket-long)::after {
+    top: var(--cut);
+    bottom: auto;
+    left: var(--r);
+    right: var(--r);
+    border-left: 0;
+    border-top: 2px dashed var(--ticket-line);
+  }
+}
+
+/* Field label on a ticket: DESTINATION, DURATION, BEST TIME, FROM, PER PERSON.
+   Solid ocean-700 (not 70 percent) so it holds 4.5 to 1 on white and sand-50. */
+.ticket-label {
+  font-family: var(--font-dm-mono), ui-monospace, monospace;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-ocean-700);
+}
+.ticket-ocean .ticket-label {
+  color: var(--color-ocean-200);
+}
