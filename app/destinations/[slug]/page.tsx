@@ -116,7 +116,7 @@ export default async function DestinationPage({
           </nav>
 
           <h1 className="mt-4 flex items-center gap-3 font-display text-4xl leading-[1.05] text-white sm:text-5xl lg:text-6xl">
-            <Flag code={destination.code} className="!w-8 sm:!w-10" />
+            <Flag code={destination.flag} className="!w-8 sm:!w-10" />
             {destination.name}
           </h1>
           <p className="mt-3 max-w-xl text-sm text-white/85 sm:text-base">
@@ -375,7 +375,7 @@ export default async function DestinationPage({
                 />
                 <div className="p-4">
                   <h3 className="flex items-center gap-2 font-display text-lg text-ocean-900">
-                    <Flag code={other.code} />
+                    <Flag code={other.flag} />
                     {other.name}
                   </h3>
                   <p className="mt-1 text-xs font-medium text-ocean-800/60">

@@ -41,7 +41,9 @@ export type Area = "asia" | "gulf" | "europe" | "india";
 export type Destination = {
   slug: string;
   name: string;
-  code: FlagCode;
+  flag: FlagCode;
+  /** Airport code of the main arrival city. Left out for domestic India. */
+  code?: string;
   country: string;
   region: "international" | "domestic";
   area: Area;
@@ -61,7 +63,7 @@ export type Departure = {
   slug: string;
   packageSlug: string;
   name: string;
-  code: FlagCode;
+  flag: FlagCode;
   /** Date or season line, for example "March 2027". */
   window: string;
   nights: number;
@@ -123,7 +125,8 @@ export const destinations: Destination[] = [
   {
     slug: "dubai",
     name: "Dubai",
-    code: "AE",
+    flag: "AE",
+    code: "DXB",
     country: "United Arab Emirates",
     region: "international",
     area: "gulf",
@@ -189,7 +192,8 @@ export const destinations: Destination[] = [
   {
     slug: "vietnam",
     name: "Vietnam",
-    code: "VN",
+    flag: "VN",
+    code: "HAN",
     country: "Vietnam",
     region: "international",
     area: "asia",
@@ -261,7 +265,8 @@ export const destinations: Destination[] = [
   {
     slug: "thailand",
     name: "Thailand",
-    code: "TH",
+    flag: "TH",
+    code: "BKK",
     country: "Thailand",
     region: "international",
     area: "asia",
@@ -327,7 +332,8 @@ export const destinations: Destination[] = [
   {
     slug: "singapore",
     name: "Singapore",
-    code: "SG",
+    flag: "SG",
+    code: "SIN",
     country: "Singapore",
     region: "international",
     area: "asia",
@@ -388,7 +394,8 @@ export const destinations: Destination[] = [
   {
     slug: "europe",
     name: "Europe",
-    code: "EU",
+    flag: "EU",
+    code: "FCO / CDG",
     country: "Italy, France and Switzerland",
     region: "international",
     area: "europe",
@@ -475,7 +482,8 @@ export const destinations: Destination[] = [
   {
     slug: "malaysia",
     name: "Malaysia",
-    code: "MY",
+    flag: "MY",
+    code: "KUL",
     country: "Malaysia",
     region: "international",
     area: "asia",
@@ -541,7 +549,8 @@ export const destinations: Destination[] = [
   {
     slug: "indonesia",
     name: "Indonesia",
-    code: "ID",
+    flag: "ID",
+    code: "DPS",
     country: "Indonesia",
     region: "international",
     area: "asia",
@@ -610,7 +619,7 @@ export const destinations: Destination[] = [
   {
     slug: "india",
     name: "India",
-    code: "IN",
+    flag: "IN",
     country: "India",
     region: "domestic",
     area: "india",
@@ -630,7 +639,8 @@ export const destinations: Destination[] = [
   {
     slug: "sri-lanka",
     name: "Sri Lanka",
-    code: "LK",
+    flag: "LK",
+    code: "CMB",
     country: "Sri Lanka",
     region: "international",
     area: "india",
@@ -645,7 +655,8 @@ export const destinations: Destination[] = [
   {
     slug: "nepal",
     name: "Nepal",
-    code: "NP",
+    flag: "NP",
+    code: "KTM",
     country: "Nepal",
     region: "international",
     area: "india",
@@ -660,7 +671,8 @@ export const destinations: Destination[] = [
   {
     slug: "bhutan",
     name: "Bhutan",
-    code: "BT",
+    flag: "BT",
+    code: "PBH",
     country: "Bhutan",
     region: "international",
     area: "india",
@@ -706,7 +718,7 @@ const departure = (
     slug,
     packageSlug,
     name,
-    code: d.code,
+    flag: d.flag,
     window,
     nights: pkg.nights,
     days: pkg.days,

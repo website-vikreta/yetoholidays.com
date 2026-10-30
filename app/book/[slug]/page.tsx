@@ -54,7 +54,7 @@ export default async function BookPage({
             Book now
           </span>
           <h1 className="mt-3 flex max-w-xl items-center gap-3 font-display text-3xl leading-[1.1] text-white sm:text-4xl lg:text-5xl">
-            <Flag code={destination.code} className="!w-7 sm:!w-9" />
+            <Flag code={destination.flag} className="!w-7 sm:!w-9" />
             {destination.name}
           </h1>
         </div>

@@ -45,7 +45,7 @@ function DestinationCard({ destination }: { destination: Destination }) {
       <div className="flex flex-1 flex-col p-5">
         <div className="flex items-baseline justify-between gap-2">
           <h3 className="flex items-center gap-2 font-display text-xl text-ocean-900">
-            <Flag code={destination.code} />
+            <Flag code={destination.flag} />
             {destination.name}
           </h3>
         </div>

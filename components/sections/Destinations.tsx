@@ -35,7 +35,7 @@ function DestinationCard({
       />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 p-5 text-white">
         <h3 className="flex items-center gap-2 font-display text-2xl leading-tight">
-          <Flag code={destination.code} />
+          <Flag code={destination.flag} />
           {destination.name}
         </h3>
         <p className="mt-1 text-sm text-white/85">{destination.places}</p>

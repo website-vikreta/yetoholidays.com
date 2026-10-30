@@ -36,7 +36,7 @@ function TourCard({ tour }: { tour: Departure }) {
 
       <div className="flex flex-1 flex-col p-5 sm:p-6">
         <h3 className="flex items-center gap-2 font-display text-xl text-ocean-900">
-          <Flag code={tour.code} />
+          <Flag code={tour.flag} />
           {tour.name}
         </h3>
         <p className="mt-1 text-xs font-medium uppercase tracking-wide text-ocean-800/55">
