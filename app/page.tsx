@@ -1,4 +1,5 @@
 import Hero from "@/components/sections/Hero";
+import Divider from "@/components/ui/Divider";
 import TrustTicket from "@/components/sections/TrustTicket";
 import Destinations from "@/components/sections/Destinations";
 import GroupTours from "@/components/sections/GroupTours";
@@ -12,8 +13,11 @@ export default function Home() {
     <>
       <Hero />
       <TrustTicket />
+      <Divider variant="route" className="mt-10" />
       <Destinations />
+      <Divider variant="dashed" className="my-6" />
       <GroupTours />
+      <Divider variant="dashed" className="my-6" />
       <WhyYeto />
       <YetoExperience />
       <Reviews />
