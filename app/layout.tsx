@@ -4,7 +4,6 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
-import ScrollFX from "@/components/ScrollFX";
 import { site } from "@/lib/site";
 
 // next/font self-hosts both families at build time, no request to Google at
@@ -109,7 +108,6 @@ export default function RootLayout({
         <main id="main">{children}</main>
         <Footer />
         <Reveal />
-        <ScrollFX />
       </body>
     </html>
   );
