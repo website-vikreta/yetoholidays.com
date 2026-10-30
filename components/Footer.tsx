@@ -75,8 +75,16 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-ocean-950 text-white">
-      <div className="mx-auto w-full max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
+    <footer className="relative bg-ocean-950 text-white">
+      {/* Wave edge on top, overlapping the closing call to action above */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-full h-10 text-ocean-950 sm:h-12">
+        <svg focusable="false" viewBox="0 0 1440 48" preserveAspectRatio="none" className="block h-full w-full fill-current">
+          <path d="M0 26 C240 2 480 50 720 26 S1200 2 1440 26 V48 H0 Z" />
+        </svg>
+      </div>
+      {/* Faint outlined wave lines */}
+      <div aria-hidden="true" className="footer-waves pointer-events-none absolute inset-0 overflow-hidden" />
+      <div className="relative mx-auto w-full max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
         <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.1fr]">
           <div className="max-w-sm">
             <div className="flex items-center gap-4">
@@ -196,7 +204,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-white/10">
+      <div className="relative border-t border-white/10">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-5 py-6 text-xs text-white/50 sm:flex-row sm:items-center sm:justify-between sm:px-8">
           <div className="space-y-1">
             <p>
