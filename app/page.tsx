@@ -1,4 +1,5 @@
 import Hero from "@/components/sections/Hero";
+import TrustTicket from "@/components/sections/TrustTicket";
 import Destinations from "@/components/sections/Destinations";
 import GroupTours from "@/components/sections/GroupTours";
 import WhyYeto from "@/components/sections/WhyYeto";
@@ -10,6 +11,7 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <TrustTicket />
       <Destinations />
       <GroupTours />
       <WhyYeto />
