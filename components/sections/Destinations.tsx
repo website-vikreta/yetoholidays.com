@@ -1,90 +1,83 @@
-import Link from "next/link";
-import Flag from "@/components/Flag";
-import SmartImage from "@/components/SmartImage";
-import { Section, SectionHeading, ArrowRight } from "@/components/ui";
-import {
-  destinations,
-  featuredDestinations,
-  formatINR,
-  formatStay,
-  leadPackage,
-  type Destination,
-} from "@/lib/data";
+import DestinationTicket from "@/components/sections/DestinationTicket";
+import PinnedPasses from "@/components/sections/PinnedPasses";
+import Ticket from "@/components/ui/Ticket";
+import { ArrowRight, Section, SectionHeading } from "@/components/ui";
+import { destinations, featuredDestinations } from "@/lib/data";
 
-function DestinationCard({
-  destination,
-  priority,
-}: {
-  destination: Destination;
-  priority: boolean;
-}) {
-  const pkg = leadPackage(destination);
+const NOTE = (
+  <p className="text-xs text-ocean-800/80">
+    Prices are starting fares per person and change with travel date,
+    availability and departure city.
+  </p>
+);
+
+/** The last pass in the row: a link to every destination, in sand tone. */
+function AllDestinationsTicket({ className = "" }: { className?: string }) {
   return (
-    <Link
-      href={`/destinations/${destination.slug}`}
-      className="group relative flex min-w-[78%] snap-center flex-col overflow-hidden rounded-2xl bg-ocean-900 shadow-md shadow-ocean-950/10 transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-ocean-950/20 sm:min-w-0"
-    >
-      <SmartImage
-        src={destination.images}
-        alt={`${destination.name}, ${destination.country}`}
-        className="aspect-[4/5] w-full sm:aspect-[4/3]"
-        imageClassName="transition-transform duration-500 ease-out group-hover:scale-105"
-        overlay="bottom"
-        priority={priority}
-        sizes="(max-width: 640px) 78vw, (max-width: 1024px) 50vw, 384px"
-      />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 p-5 text-white">
-        <h3 className="flex items-center gap-2 font-display text-2xl leading-tight">
-          <Flag code={destination.flag} />
-          {destination.name}
-        </h3>
-        <p className="mt-1 text-sm text-white/85">{destination.places}</p>
-        <p className="mt-3 text-xs font-medium text-white/75">
-          {pkg ? (
-            <>
-              <span className="block">From {formatINR(pkg.fromPrice)} per person</span>
-              <span className="block">{formatStay(pkg.nights, pkg.days)}</span>
-            </>
-          ) : (
-            "Price on request"
-          )}
-        </p>
-      </div>
-    </Link>
+    <Ticket
+      href="/destinations"
+      aria-label={`View all ${destinations.length} destinations`}
+      tone="sand"
+      stubHeight="6rem"
+      className={`reveal-settle h-full ${className}`}
+      ticketClassName="h-full [--cut:62%]"
+      main={
+        <div className="flex h-full min-h-[16rem] flex-col justify-center p-6">
+          <p className="ticket-label">Destinations</p>
+          <p className="mt-2 font-display text-4xl leading-none text-ocean-900">{destinations.length}</p>
+          <p className="mt-3 text-sm leading-snug text-ocean-800">
+            Six are shown here. Ask us about the rest.
+          </p>
+        </div>
+      }
+      stub={
+        <div className="flex h-full flex-col items-center justify-center gap-2 p-3 text-center text-xs font-semibold text-ocean-900 sm:text-sm">
+          View all destinations
+          <ArrowRight />
+        </div>
+      }
+    />
   );
 }
 
 export default function Destinations() {
+  const heading = (
+    <SectionHeading
+      title="Where do you want to go?"
+      intro={`Start with one of these six, or ask us about any of our ${destinations.length} destinations.`}
+    />
+  );
+  const total = featuredDestinations.length + 1;
+
   return (
-    <Section id="destinations">
-      <SectionHeading
-        title="Where do you want to go?"
-        intro={`Start with one of these six, or ask us about any of our ${destinations.length} destinations.`}
-      />
-
-      <div className="reveal -mx-5 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 snap-rail sm:mx-0 sm:grid sm:snap-none sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:px-0 lg:grid-cols-3">
-        {featuredDestinations.map((destination, index) => (
-          <DestinationCard
-            key={destination.slug}
-            destination={destination}
-            priority={index < 3}
-          />
+    <>
+      {/* Large screens, fine pointer, motion allowed: pinned row that slides sideways. */}
+      <PinnedPasses heading={heading} note={NOTE} count={total}>
+        {featuredDestinations.map((destination) => (
+          <div key={destination.slug} data-pass className="w-[360px] shrink-0 self-stretch">
+            <DestinationTicket destination={destination} />
+          </div>
         ))}
-      </div>
+        <div data-pass className="w-[320px] shrink-0 self-stretch">
+          <AllDestinationsTicket />
+        </div>
+      </PinnedPasses>
 
-      <div className="reveal mt-10 flex justify-center sm:justify-start">
-        <Link
-          href="/destinations"
-          className="group inline-flex items-center gap-2 text-sm font-semibold text-ocean-900 hover:text-ocean-700"
-        >
-          View all destinations
-          <ArrowRight className="transition-transform duration-200 group-hover:translate-x-1" />
-        </Link>
-      </div>
-      <p className="reveal mt-4 text-center text-xs text-ocean-800/75 sm:text-left">
-        Prices are starting fares per person and change with travel date,
-        availability and departure city.
-      </p>
-    </Section>
+      {/* Everywhere else: a normal horizontal snap rail. */}
+      <Section id="destinations-rail" className="rail-only">
+        {heading}
+        <div className="-mx-5 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-8 pt-2 snap-rail sm:-mx-8 sm:gap-6 sm:px-8">
+          {featuredDestinations.map((destination) => (
+            <div key={destination.slug} className="w-[84%] shrink-0 snap-center sm:w-[360px]">
+              <DestinationTicket destination={destination} />
+            </div>
+          ))}
+          <div className="w-[84%] shrink-0 snap-center sm:w-[320px]">
+            <AllDestinationsTicket />
+          </div>
+        </div>
+        <div className="mt-2">{NOTE}</div>
+      </Section>
+    </>
   );
 }

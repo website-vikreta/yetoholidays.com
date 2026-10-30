@@ -32,7 +32,9 @@ export function SectionHeading({
           tone === "light" ? "text-white" : "text-ocean-900"
         }`}
       >
-        {title}
+        <span className="reveal-mask">
+          <span className="reveal-mask-line">{title}</span>
+        </span>
       </h2>
       {intro ? (
         <p
