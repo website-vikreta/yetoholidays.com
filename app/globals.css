@@ -73,12 +73,14 @@ body {
    blocks start hidden and animate in.
    `will-change` is deliberately omitted, promoting every reveal block to its
    own compositor layer for the life of the page costs more than it buys. */
-:root[data-js] .reveal {
+:root[data-js] .reveal,
+:root[data-js] .reveal-up {
   opacity: 0;
   transform: translateY(24px);
 }
 
-:root[data-js] .reveal.is-visible {
+:root[data-js] .reveal.is-visible,
+:root[data-js] .reveal-up.is-visible {
   opacity: 1;
   transform: none;
   transition:
@@ -86,9 +88,47 @@ body {
     transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* reveal-mask: a heading's text slides up from behind a clipped line. Wrap the
+   text in <span class="reveal-mask-line">. The padding keeps descenders unclipped. */
+.reveal-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+.reveal-mask-line {
+  display: block;
+}
+:root[data-js] .reveal-mask .reveal-mask-line {
+  transform: translateY(115%);
+}
+:root[data-js] .reveal-mask.is-visible .reveal-mask-line {
+  transform: none;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* reveal-settle: tickets drop in, scale 0.97 to 1 and rotate 1.5deg to 0.
+   Set --dx on the element to make it arrive from the side. */
+:root[data-js] .reveal-settle {
+  opacity: 0;
+  transform: translateX(var(--dx, 0)) scale(0.97) rotate(1.5deg);
+}
+:root[data-js] .reveal-settle.is-visible {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  :root[data-js] .reveal {
+  :root[data-js] .reveal,
+  :root[data-js] .reveal-up,
+  :root[data-js] .reveal-settle {
     opacity: 1;
+    transform: none;
+  }
+  :root[data-js] .reveal-mask .reveal-mask-line {
     transform: none;
   }
 }

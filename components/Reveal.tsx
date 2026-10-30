@@ -12,6 +12,9 @@ import { useEffect } from "react";
  * and would otherwise stay stuck at opacity 0 forever. A MutationObserver
  * picks those up as they arrive.
  */
+const SELECTOR = ".reveal, .reveal-up, .reveal-mask, .reveal-settle";
+const PENDING = SELECTOR.split(", ").map((c) => `${c}:not(.is-visible)`).join(", ");
+
 export default function Reveal() {
   const pathname = usePathname();
 
@@ -21,7 +24,7 @@ export default function Reveal() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (reduced || typeof IntersectionObserver === "undefined") {
-      const showAll = () => document.querySelectorAll(".reveal").forEach(reveal);
+      const showAll = () => document.querySelectorAll(SELECTOR).forEach(reveal);
       showAll();
       const mo = new MutationObserver(showAll);
       mo.observe(document.body, { childList: true, subtree: true });
@@ -43,18 +46,17 @@ export default function Reveal() {
     // Re-observing an element already being observed is a no-op, so this is
     // safe to call as often as the DOM changes.
     const observeAll = () =>
-      document
-        .querySelectorAll(".reveal:not(.is-visible)")
-        .forEach((el) => io.observe(el));
+      document.querySelectorAll(PENDING).forEach((el) => io.observe(el));
 
     observeAll();
 
     // Failsafe: if the observer is late (slow main thread, restored scroll
     // position), still show anything already on screen so no block stays hidden.
     const revealOnScreen = () =>
-      document.querySelectorAll(".reveal:not(.is-visible)").forEach((el) => {
+      document.querySelectorAll(PENDING).forEach((el) => {
         const r = el.getBoundingClientRect();
-        if (r.top < window.innerHeight && r.bottom > 0) {
+        // Horizontal check too, so tickets waiting off-screen in the pinned row stay hidden.
+        if (r.top < window.innerHeight && r.bottom > 0 && r.left < window.innerWidth && r.right > 0) {
           reveal(el);
           io.unobserve(el);
         }
