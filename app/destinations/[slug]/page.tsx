@@ -190,7 +190,7 @@ export default async function DestinationPage({
                       >
                         {index + 1}
                       </span>
-                      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-sand-600">
+                      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-sand-700">
                         {item.day}
                       </p>
                       <h3 className="mt-1 font-display text-lg text-ocean-900 sm:text-xl">
@@ -233,7 +233,7 @@ export default async function DestinationPage({
                     {NOT_INCLUDED.map((item) => (
                       <li
                         key={item}
-                        className="flex items-start gap-3 text-sm leading-relaxed text-ocean-800/60 sm:text-base"
+                        className="flex items-start gap-3 text-sm leading-relaxed text-ocean-800/80 sm:text-base"
                       >
                         <span aria-hidden className="mt-2 h-1 w-1 shrink-0 rounded-full bg-ocean-900/40" />
                         <span>{item}</span>
@@ -243,7 +243,7 @@ export default async function DestinationPage({
                 </div>
               </div>
 
-                <p className="reveal mt-6 text-xs leading-relaxed text-ocean-800/60 sm:text-sm">
+                <p className="reveal mt-6 text-xs leading-relaxed text-ocean-800/80 sm:text-sm">
                   {VISA_NOTE}
                 </p>
               </>
@@ -257,7 +257,7 @@ export default async function DestinationPage({
                   budget, so there is no fixed itinerary or price listed yet.
                   Request a quote and our team will call you back with a plan.
                 </p>
-                <p className="mt-3 text-xs leading-relaxed text-ocean-800/60 sm:text-sm">
+                <p className="mt-3 text-xs leading-relaxed text-ocean-800/80 sm:text-sm">
                   {VISA_NOTE}
                 </p>
               </div>
@@ -410,7 +410,7 @@ export default async function DestinationPage({
         <div className="min-w-0">
           {pkg ? (
             <>
-              <p className="text-[0.65rem] font-semibold uppercase tracking-wide text-sand-600">
+              <p className="text-[0.65rem] font-semibold uppercase tracking-wide text-sand-700">
                 from
               </p>
               <p className="font-display text-lg leading-tight text-ocean-900">

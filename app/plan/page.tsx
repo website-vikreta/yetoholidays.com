@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import { site, whatsappDisplay } from "@/lib/site";
 import Ticket from "@/components/ui/Ticket";
 import WaveEdge from "@/components/ui/WaveEdge";
@@ -26,7 +25,23 @@ const STEPS = [
   },
 ];
 
-export default function PlanPage() {
+const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v) ?? "";
+
+export default async function PlanPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const query = await searchParams;
+  const month = one(query.month);
+  const travellers = one(query.travellers);
+  // Only well-formed values reach the form: YYYY-MM and a whole number from 1 to 99.
+  const initial = {
+    destination: one(query.destination),
+    month: /^\d{4}-\d{2}$/.test(month) ? month : "",
+    travellers: /^[1-9]\d?$/.test(travellers) ? travellers : "2",
+  };
+
   const hasContact = Boolean(
     site.contact.whatsapp || site.contact.phone || site.contact.email,
   );
@@ -50,15 +65,7 @@ export default function PlanPage() {
 
       <section className="py-12 sm:py-16">
         <div className="mx-auto grid max-w-6xl grid-cols-1 px-5 sm:px-8 gap-10 lg:grid-cols-[1fr_360px] lg:gap-14">
-          <Suspense
-            fallback={
-              <div className="rounded-2xl border border-ocean-900/10 bg-white p-8 text-sm text-ocean-800/60">
-                Loading form&hellip;
-              </div>
-            }
-          >
-            <PlanForm />
-          </Suspense>
+          <PlanForm initial={initial} />
 
           {/* Reassurance column */}
           <aside className="space-y-8">
@@ -80,7 +87,7 @@ export default function PlanPage() {
                       <p className="text-sm font-semibold text-ocean-900">
                         {step.title}
                       </p>
-                      <p className="mt-0.5 text-sm text-ocean-800/70">
+                      <p className="mt-0.5 text-sm text-ocean-800/80">
                         {step.body}
                       </p>
                     </div>

@@ -32,7 +32,7 @@ function ReviewCard({
       </p>
       <div className="mt-5 text-sm">
         <p className="font-semibold text-ocean-900">{review.name}</p>
-        <p className="text-ocean-800/60">{review.trip}</p>
+        <p className="text-ocean-800/80">{review.trip}</p>
       </div>
     </div>
   );

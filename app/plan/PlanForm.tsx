@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { destinations } from "@/lib/data";
 import { site, whatsappLink } from "@/lib/site";
 
@@ -48,11 +47,12 @@ function buildWhatsAppMessage(form: FormState): string {
   return lines.join("\n");
 }
 
-export default function PlanForm() {
-  const searchParams = useSearchParams();
+/** Values the hero ticket and destination pages put in the URL, read on the server. */
+export type PlanInitial = { destination: string; month: string; travellers: string };
+
+export default function PlanForm({ initial }: { initial: PlanInitial }) {
   // "bali" was its own destination in the first demo; it now lives in Indonesia.
-  const requested = searchParams.get("destination") ?? "";
-  const initialDestination = requested === "bali" ? "indonesia" : requested;
+  const initialDestination = initial.destination === "bali" ? "indonesia" : initial.destination;
 
   const [form, setForm] = useState<FormState>({
     name: "",
@@ -61,8 +61,8 @@ export default function PlanForm() {
     destination: destinations.some((d) => d.slug === initialDestination)
       ? initialDestination
       : "",
-    month: "",
-    travellers: "2",
+    month: initial.month,
+    travellers: initial.travellers,
     tripType: "Family",
     budget: "",
     message: "",
