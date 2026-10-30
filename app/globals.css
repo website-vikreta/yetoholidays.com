@@ -285,3 +285,10 @@ img {
 .ticket-ocean .ticket-label {
   color: var(--color-ocean-200);
 }
+
+/* Route line that draws itself. pathLength is 1, so the offset is simply 1 - progress.
+   Without JavaScript or under reduced motion --p is unset or 1: the full line shows. */
+.route-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(1 - var(--p, 1));
+}
