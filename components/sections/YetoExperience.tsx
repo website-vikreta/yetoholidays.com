@@ -16,7 +16,8 @@ const TILES = [
   {
     images: EXPERIENCE_IMAGES.honeymoon,
     caption: "Honeymoons",
-    body: "Quiet stays and private moments, built around just the two of you.",
+    id: "honeymoons",
+    body: "A slower pace and time for just the two of you.",
   },
 ];
 
@@ -30,34 +31,35 @@ export default function YetoExperience() {
       >
         <div className="fx-zoom-out absolute inset-0">
           <SmartImage
-            src={EXPERIENCE_IMAGES.signboard}
-            alt="A wooden signpost at a mountain trailhead"
+            src={EXPERIENCE_IMAGES.landscape}
+            alt=""
             className="h-full w-full"
             sizes="100vw"
             overlay="strong"
           />
         </div>
         <div className="relative z-10 flex flex-col items-center px-6 text-center text-white">
-          <span className="h-px w-16 bg-sand-300 sm:w-24" aria-hidden />
-          <h2 className="mt-6">
+          <h2>
             <Logo
               light
               className="h-16 sm:h-24 lg:h-32"
               sizes="(max-width: 640px) 200px, (max-width: 1024px) 300px, 400px"
             />
           </h2>
-          <span className="mt-6 h-px w-16 bg-sand-300 sm:w-24" aria-hidden />
-          <p className="mt-6 max-w-md font-display text-lg italic text-white/85 sm:text-xl">
-            A destination begins with a journey.
-          </p>
         </div>
       </div>
 
       {/* Experience tiles */}
-      <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-5 px-5 py-14 sm:grid-cols-3 sm:px-8 sm:py-20">
+      <div className="mx-auto w-full max-w-6xl px-5 pt-14 sm:px-8 sm:pt-20">
+        <h2 className="reveal font-display text-3xl leading-[1.15] tracking-tight text-ocean-900 sm:text-4xl">
+          Who we plan for
+        </h2>
+      </div>
+      <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-5 px-5 py-10 sm:grid-cols-3 sm:px-8 sm:pb-20">
         {TILES.map((tile, i) => (
           <div
             key={tile.caption}
+            id={"id" in tile ? tile.id : undefined}
             className="reveal group relative overflow-hidden rounded-2xl"
             style={{ transitionDelay: `${i * 70}ms` }}
           >
@@ -91,16 +93,12 @@ export default function YetoExperience() {
           sizes="(max-width: 640px) 100vw, 50vw"
         />
         <div className="sm:w-1/2">
-          <span className="inline-block text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-sand-600">
+          <h3 className="font-display text-2xl text-ocean-900 sm:text-3xl">
             Corporate travel
-          </span>
-          <h3 className="mt-3 font-display text-2xl text-ocean-900 sm:text-3xl">
-            Offsites, incentives &amp; MICE
           </h3>
           <p className="mt-3 text-[0.95rem] leading-relaxed text-ocean-800/70">
-            From a 20-person team offsite to a full incentive programme, we
-            handle venues, logistics and on-ground support so your team just
-            has to show up.
+            Team offsites, incentive trips and conferences. Tell us the
+            headcount and dates, and we plan the venue, travel and transfers.
           </p>
         </div>
       </div>

@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  /* Yeto brand — deep ocean blue + sand/beige + white */
+  /* Yeto brand, deep ocean blue + sand/beige + white */
   --color-ocean-50: #f0f7fb;
   --color-ocean-100: #dbecf6;
   --color-ocean-200: #bcdcee;
@@ -71,7 +71,7 @@ body {
    with JavaScript disabled or if hydration fails. The inline script in the
    layout sets `data-js` on <html> before first paint, and only then do these
    blocks start hidden and animate in.
-   `will-change` is deliberately omitted — promoting every reveal block to its
+   `will-change` is deliberately omitted, promoting every reveal block to its
    own compositor layer for the life of the page costs more than it buys. */
 :root[data-js] .reveal {
   opacity: 0;
@@ -146,7 +146,7 @@ body {
 }
 
 /* Every photo sits on a brand gradient. If a remote image 404s, hide the
-   broken-image glyph and alt text so the gradient stands in cleanly — this is
+   broken-image glyph and alt text so the gradient stands in cleanly, this is
    the CSS-only replacement for gating visibility on a JS onLoad handler. */
 img {
   color: transparent;

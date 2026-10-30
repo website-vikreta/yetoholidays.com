@@ -7,7 +7,7 @@ import Reveal from "@/components/Reveal";
 import ScrollFX from "@/components/ScrollFX";
 import { site } from "@/lib/site";
 
-// next/font self-hosts both families at build time — no request to Google at
+// next/font self-hosts both families at build time, no request to Google at
 // runtime, and no layout shift thanks to the generated fallback metrics.
 // Both are variable fonts, so one file covers every weight. Fraunces' optional
 // SOFT and WONK axes are deliberately not requested: enabling them grew the
@@ -31,11 +31,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   alternates: { canonical: "./" },
   title: {
-    default: `${site.name} — ${site.tagline}`,
+    default: "Yeto Holidays | Travel agency in Nagpur",
     template: "%s | Yeto Holidays",
   },
   description:
-    "Holidays planned from departure to return: international and domestic tours, honeymoons, group departures and corporate travel from Nagpur.",
+    "Yeto Holidays plans international and domestic holidays, honeymoons, group tours and corporate trips from our office in Dharampeth, Nagpur.",
   keywords: [
     "Yeto Holidays",
     "travel agency",
@@ -48,18 +48,18 @@ export const metadata: Metadata = {
     "Thailand packages",
   ],
   openGraph: {
-    title: `${site.name} — ${site.tagline}`,
+    title: "Yeto Holidays | Travel agency in Nagpur",
     description:
-      "Discover unforgettable holidays, carefully planned from departure to return.",
+      "Yeto Holidays plans international and domestic holidays, honeymoons, group tours and corporate trips from our office in Dharampeth, Nagpur.",
     siteName: site.name,
     type: "website",
     locale: "en_IN",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Yeto Holidays",
+    title: "Yeto Holidays | Travel agency in Nagpur",
     description:
-      "Discover unforgettable holidays, carefully planned from departure to return.",
+      "Yeto Holidays plans international and domestic holidays, honeymoons, group tours and corporate trips from our office in Dharampeth, Nagpur.",
   },
 };
 
@@ -77,7 +77,7 @@ export default function RootLayout({
       <head>
         {/* Runs before first paint, and is the only inline script on the page.
             1. Marks that scripting is available, so scroll-reveal blocks start
-               hidden — without JS the page still renders in full.
+               hidden, without JS the page still renders in full.
             2. One capturing listener hides any image that fails to load, so the
                brand gradient behind it shows through instead of a broken-image
                glyph. Doing this globally keeps <SmartImage> a server component:

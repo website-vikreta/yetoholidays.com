@@ -24,10 +24,11 @@ export default function FinalCta() {
 
       <div className="reveal relative z-10 mx-auto flex max-w-2xl flex-col items-center px-5 py-20 text-center text-white sm:px-8">
         <h2 className="font-display text-3xl leading-[1.1] tracking-tight sm:text-4xl lg:text-5xl">
-          Your next adventure is waiting.
+          Not sure where to go yet?
         </h2>
         <p className="mt-4 max-w-md text-balance text-sm leading-relaxed text-white/80 sm:text-base">
-          Tell us where you want to go. We&apos;ll take care of the rest.
+          Tell us your dates, your budget and who is travelling. We will
+          suggest a few options.
         </p>
 
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -38,11 +39,11 @@ export default function FinalCta() {
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 rounded-full bg-sand-400 px-6 py-3.5 text-sm font-semibold text-ocean-950 shadow-lg shadow-sand-500/25 transition-all duration-200 hover:bg-sand-300 active:scale-[0.98] sm:px-8 sm:py-4 sm:text-base"
             >
-              WhatsApp Us
+              WhatsApp us
             </a>
           ) : null}
           <ButtonLink href="/plan" variant="white" size="lg">
-            Plan My Holiday
+            Plan my holiday
           </ButtonLink>
         </div>
 
@@ -60,7 +61,7 @@ export default function FinalCta() {
         <p
           className={`text-xs text-white/60 ${site.contact.email ? "mt-2" : "mt-6"}`}
         >
-          Visit us: {addressLine}
+          Our office: {addressLine}
         </p>
       </div>
     </section>

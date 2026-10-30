@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useState } from "react";
-import { ButtonLink } from "@/components/ui";
+import { ArrowRight, ButtonLink } from "@/components/ui";
 import Logo from "@/components/Logo";
 import { whatsappDisplay, whatsappLink } from "@/lib/site";
 
@@ -14,10 +14,10 @@ const SOLID_HEADER_PATHS = ["/privacy", "/terms", "/cancellation-policy"];
 
 const NAV_LINKS = [
   { label: "Destinations", href: "/destinations" },
-  { label: "Tours", href: "/#tours" },
-  { label: "Experiences", href: "/#experiences" },
+  { label: "Group tours", href: "/#tours" },
+  { label: "Honeymoons", href: "/#honeymoons" },
   { label: "Corporate", href: "/#corporate" },
-  { label: "About Us", href: "/#about" },
+  { label: "About", href: "/#about" },
 ];
 
 function Wordmark({ light }: { light: boolean }) {
@@ -137,8 +137,8 @@ export default function Header() {
 
         <div className="hidden lg:block">
           <ButtonLink href="/plan" variant={solid ? "primary" : "white"} size="sm">
-            Plan My Trip
-            <span aria-hidden>→</span>
+            Plan my trip
+            <ArrowRight />
           </ButtonLink>
         </div>
 
@@ -195,8 +195,8 @@ export default function Header() {
             onClick={() => setOpen(false)}
             className="w-full"
           >
-            Plan My Trip
-            <span aria-hidden>→</span>
+            Plan my trip
+            <ArrowRight />
           </ButtonLink>
           {whatsappHref ? (
             <a
@@ -206,7 +206,7 @@ export default function Header() {
               onClick={() => setOpen(false)}
               className="flex min-h-[44px] items-center justify-center gap-2 text-sm font-semibold text-ocean-800 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sand-400"
             >
-              WhatsApp us — {whatsappDisplay}
+              WhatsApp us: {whatsappDisplay}
             </a>
           ) : null}
         </div>

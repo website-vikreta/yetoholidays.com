@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import Flag from "@/components/Flag";
 import SmartImage from "@/components/SmartImage";
-import { formatINR, leadPackage, type Destination } from "@/lib/data";
+import { formatINR, formatStay, leadPackage, type Destination } from "@/lib/data";
 
 type Filter = "all" | Destination["region"];
 
@@ -43,15 +44,15 @@ function DestinationCard({ destination }: { destination: Destination }) {
 
       <div className="flex flex-1 flex-col p-5">
         <div className="flex items-baseline justify-between gap-2">
-          <h3 className="font-display text-xl text-ocean-900">
-            <span className="mr-1.5">{destination.flag}</span>
+          <h3 className="flex items-center gap-2 font-display text-xl text-ocean-900">
+            <Flag code={destination.code} />
             {destination.name}
           </h3>
         </div>
         <p className="mt-0.5 text-xs font-medium uppercase tracking-wide text-sand-600">
           {destination.country}
         </p>
-        <p className="mt-2 text-sm text-ocean-800/70">{destination.tagline}</p>
+        <p className="mt-2 text-sm text-ocean-800/70">{destination.places}</p>
 
         <div className="mt-4 flex flex-wrap gap-1.5">
           {destination.highlights.slice(0, 3).map((h) => (
@@ -68,16 +69,16 @@ function DestinationCard({ destination }: { destination: Destination }) {
           {pkg ? (
             <>
               <span className="font-semibold text-ocean-900">
-                from {formatINR(pkg.fromPrice)}
+                From {formatINR(pkg.fromPrice)} per person
               </span>
               <span className="text-ocean-800/60">
-                {pkg.nights}N / {pkg.days}D
+                {formatStay(pkg.nights, pkg.days)}
               </span>
             </>
           ) : (
             <>
               <span className="font-semibold text-ocean-900">Price on request</span>
-              <span className="text-ocean-800/60">Itinerary on enquiry</span>
+              <span className="text-ocean-800/60">Itinerary on request</span>
             </>
           )}
         </div>
@@ -126,7 +127,8 @@ export default function DestinationGrid({
         Showing {groups.reduce((n, g) => n + g.items.length, 0)} destinations
       </p>
       <p className="mt-6 text-xs text-ocean-800/75">
-        Prices are indicative starting fares per person.
+        Prices are starting fares per person and change with travel date,
+        availability and departure city.
       </p>
 
       <div className="mt-8 space-y-12">

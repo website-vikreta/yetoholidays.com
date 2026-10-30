@@ -27,7 +27,7 @@ type FormState = {
 function buildWhatsAppMessage(form: FormState): string {
   const destinationLabel =
     form.destination === "other"
-      ? "Somewhere else / not sure yet"
+      ? "Somewhere else or not sure yet"
       : destinations.find((d) => d.slug === form.destination)?.name ??
         form.destination;
 
@@ -116,8 +116,8 @@ export default function PlanForm() {
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-ocean-800/75 sm:text-base">
           {waHref || mailHref
-            ? "We've noted your enquiry details here in your browser. Our team isn't automatically notified yet, though — to make sure we see this right away, please send it to us using the button below. Your details will be pre-filled so you can review and send in one tap."
-            : "We've noted your enquiry details here in your browser, but online submission isn't connected yet, so our team has not received them. Please try again soon."}
+            ? "We have noted your enquiry in your browser, but our team is not notified automatically yet. To make sure we see it, please send it to us with the button below. Your details are already filled in, so you can check them and send in one tap."
+            : "We have noted your enquiry in your browser, but online submission is not connected yet, so our team has not received it. Please try again soon."}
         </p>
 
         {waHref ? (
@@ -219,10 +219,10 @@ export default function PlanForm() {
             <option value="">Select a destination</option>
             {destinations.map((d) => (
               <option key={d.slug} value={d.slug}>
-                {d.flag} {d.name}
+                {d.name}
               </option>
             ))}
-            <option value="other">Somewhere else / not sure yet</option>
+            <option value="other">Somewhere else or not sure yet</option>
           </select>
         </div>
 
@@ -287,7 +287,7 @@ export default function PlanForm() {
             value={form.budget}
             onChange={(e) => update("budget", e.target.value)}
             className={INPUT_CLASS}
-            placeholder="e.g. ₹60,000 – ₹80,000"
+            placeholder="For example ₹60,000 to ₹80,000"
           />
         </div>
 

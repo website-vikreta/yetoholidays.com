@@ -5,9 +5,9 @@ import { HERO_IMAGES, destinations } from "@/lib/data";
 
 const TRUST_POINTS = [
   { label: `${destinations.length} destinations`, hideOnMobile: false },
-  { label: "Flights + stays + sightseeing", hideOnMobile: false },
+  { label: "Flights, hotels and sightseeing in one package", hideOnMobile: false },
   { label: "Tour manager on group departures", hideOnMobile: true },
-  { label: "Visa assistance", hideOnMobile: true },
+  { label: "Help with visa paperwork", hideOnMobile: true },
 ];
 
 export default function Hero() {
@@ -25,7 +25,7 @@ export default function Hero() {
       <div className="fx-zoom-in absolute inset-0">
         <SmartImage
           src={HERO_IMAGES}
-          alt="Traveller looking out over a scenic coastline at golden hour"
+          alt="Boats among the limestone islands of Ha Long Bay, Vietnam"
           className="h-full w-full"
           imageClassName="[animation:hero-zoom_18s_ease-in-out_infinite_alternate]"
           sizes="100vw"
@@ -41,27 +41,18 @@ export default function Hero() {
 
       {/* Main content */}
       <div className="fx-drift-up relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-5 pt-28 pb-16 text-center sm:px-8 lg:items-start lg:pt-32 lg:text-left">
-        <span className="inline-flex items-center rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/85 backdrop-blur">
-          International &amp; domestic holidays
-        </span>
-
-        <h1 className="mt-6 max-w-4xl font-display text-[clamp(2.5rem,9vw,5.5rem)] font-medium leading-[0.95] tracking-wide text-white">
-          YETO
-          <span className="block text-sand-300">HOLIDAYS</span>
+        <h1 className="max-w-3xl font-display text-[clamp(2.4rem,7vw,4.5rem)] font-medium leading-[1.05] tracking-tight text-white">
+          Plan your next holiday with Yeto
         </h1>
 
-        <p className="mt-5 font-display text-xl italic text-white/90 sm:text-2xl">
-          Your Journey. Your Story. Your Yeto.
-        </p>
-
-        <p className="mt-4 max-w-xl text-balance text-sm leading-relaxed text-white/70 sm:text-base">
-          Discover unforgettable holidays, carefully planned from departure to
-          return.
+        <p className="mt-5 max-w-xl text-balance text-base leading-relaxed text-white/85 sm:text-lg">
+          International and domestic trips, group departures, honeymoons and
+          corporate travel, planned by our team in Nagpur.
         </p>
 
         <div className="mt-9 flex flex-col gap-3 sm:flex-row">
           <ButtonLink href="/destinations" variant="white" size="lg">
-            Explore Destinations
+            See destinations
           </ButtonLink>
           {/* The flight route starts at this button's right edge. */}
           <div className="relative">
@@ -71,7 +62,7 @@ export default function Hero() {
               size="lg"
               className="w-full sm:w-auto"
             >
-              Plan My Trip
+              Plan my trip
             </ButtonLink>
             <FlightPath />
           </div>

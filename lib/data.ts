@@ -32,13 +32,21 @@ export type Package = {
   inclusions: string[];
 };
 
+/** ISO country code for the flag icon. Europe uses the EU flag. */
+export type FlagCode = "AE" | "VN" | "TH" | "SG" | "EU" | "MY" | "ID" | "IN" | "LK" | "NP" | "BT";
+
+/** Groups used by the destination filter chips. */
+export type Area = "asia" | "gulf" | "europe" | "india";
+
 export type Destination = {
   slug: string;
   name: string;
-  flag: string;
+  code: FlagCode;
   country: string;
   region: "international" | "domestic";
-  tagline: string;
+  area: Area;
+  /** Named places, shown on cards as a plain comma-separated line. */
+  places: string;
   highlights: string[];
   images: string[];
   bestTime: string;
@@ -53,10 +61,13 @@ export type Departure = {
   slug: string;
   packageSlug: string;
   name: string;
-  flag: string;
-  badge?: string;
+  code: FlagCode;
+  /** Date or season line, for example "March 2027". */
   window: string;
-  duration: string;
+  nights: number;
+  days: number;
+  /** Seats left. Leave unset until the client supplies real availability. */
+  seatsLeft?: number;
   fromPrice: number;
   priceStatus: PriceStatus;
   includes: string[];
@@ -75,11 +86,8 @@ const DEFAULT_DEPOSIT_PERCENT = 25;
 const U = (id: string, w = 1400) =>
   `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=70`;
 
-export const HERO_IMAGES = [
-  U("1507525428034-b723cf961d3e", 2000),
-  U("1519046904884-53103b34b206", 2000),
-  U("1476514525535-07fb3b4ae5f1", 2000),
-];
+/** Ha Long Bay, Vietnam: a real destination we sell, same photo as the Vietnam card. */
+export const HERO_IMAGES = [U("1528127269322-539801943592", 2000)];
 
 export const EXPERIENCE_IMAGES = {
   travellers: [
@@ -102,7 +110,8 @@ export const EXPERIENCE_IMAGES = {
     U("1524178232363-1fb2b075b655"),
     U("1552664730-d307ca884978"),
   ],
-  signboard: [
+  /** Decorative background behind the logo. Not a photo of any Yeto sign. */
+  landscape: [
     U("1501785888041-af3ef285b470"),
     U("1464822759023-fed622ff2c3b"),
     U("1441974231531-c6227db76b6e"),
@@ -114,14 +123,15 @@ export const destinations: Destination[] = [
   {
     slug: "dubai",
     name: "Dubai",
-    flag: "🇦🇪",
+    code: "AE",
     country: "United Arab Emirates",
     region: "international",
-    tagline: "Luxury • Shopping • Adventure",
+    area: "gulf",
+    places: "Burj Khalifa, desert safari, Dubai Marina",
     highlights: ["Burj Khalifa","Desert Safari","Dubai Marina","Palm Jumeirah"],
     images: [U("1512453979798-5ea266f8880c"), U("1518684079-3c830dcef090"), U("1546412414-e1885259563a")],
-    bestTime: "October – March",
-    blurb: "Skyline dinners, desert dunes and gold-souk mornings. Dubai is the easiest first international trip for a family — and still the most fun one for a group.",
+    bestTime: "October to March",
+    blurb: "Burj Khalifa, a desert safari, a dhow cruise dinner and a day trip to Abu Dhabi, in six days.",
     featured: true,
     packages: [
       {
@@ -135,7 +145,7 @@ export const destinations: Destination[] = [
         itinerary: [
           {
             "day": "Day 1",
-            "title": "Arrival & Dubai Marina",
+            "title": "Arrival and Dubai Marina",
             "detail": "Airport pickup, hotel check-in and an evening at Marina Walk with a dhow cruise dinner."
           },
           {
@@ -156,7 +166,7 @@ export const destinations: Destination[] = [
           {
             "day": "Day 5",
             "title": "Free day & shopping",
-            "detail": "Dubai Mall, Global Village or a Palm Jumeirah beach day — your call."
+            "detail": "Dubai Mall, Global Village or a Palm Jumeirah beach day, your choice."
           },
           {
             "day": "Day 6",
@@ -179,14 +189,15 @@ export const destinations: Destination[] = [
   {
     slug: "vietnam",
     name: "Vietnam",
-    flag: "🇻🇳",
+    code: "VN",
     country: "Vietnam",
     region: "international",
-    tagline: "Hanoi • Da Nang • Phu Quoc",
+    area: "asia",
+    places: "Hanoi, Ha Long Bay, Da Nang",
     highlights: ["Ha Long Bay","Ba Na Hills","Hoi An Old Town","Phu Quoc beaches"],
     images: [U("1528127269322-539801943592"), U("1509923936072-1806e0cc3a7c"), U("1583417319070-4a69db38a482")],
-    bestTime: "November – April",
-    blurb: "Limestone islands, lantern-lit streets and some of the best food in Asia. Vietnam gives you three very different holidays in one trip.",
+    bestTime: "November to April",
+    blurb: "Hanoi, a Ha Long Bay cruise, Ba Na Hills and Hoi An in one trip, with the flight from Hanoi to Da Nang included.",
     featured: true,
     packages: [
       {
@@ -236,7 +247,7 @@ export const destinations: Destination[] = [
         ],
         inclusions: [
           "Return economy flights",
-          "Internal Hanoi–Da Nang flight",
+          "Flight from Hanoi to Da Nang",
           "4★ hotels with daily breakfast",
           "Ha Long Bay day cruise with lunch",
           "Ba Na Hills cable car tickets",
@@ -250,14 +261,15 @@ export const destinations: Destination[] = [
   {
     slug: "thailand",
     name: "Thailand",
-    flag: "🇹🇭",
+    code: "TH",
     country: "Thailand",
     region: "international",
-    tagline: "Bangkok • Phuket • Krabi",
+    area: "asia",
+    places: "Phuket, Phang Nga Bay, Bangkok",
     highlights: ["Phi Phi Islands","Grand Palace","James Bond Island","Railay Beach"],
     images: [U("1528181304800-259b08848526"), U("1552465011-b4e21bf6e79a"), U("1537956965359-7573183d1f57")],
-    bestTime: "November – March",
-    blurb: "Longtail boats, limestone cliffs and night markets. The classic island-and-city combination that never stops working.",
+    bestTime: "November to March",
+    blurb: "Phuket and Bangkok in one trip: Phi Phi Islands and Phang Nga Bay by boat, then the Grand Palace and a Bangkok city tour.",
     featured: true,
     packages: [
       {
@@ -302,7 +314,7 @@ export const destinations: Destination[] = [
         ],
         inclusions: [
           "Return economy flights",
-          "Internal Phuket–Bangkok flight",
+          "Flight from Phuket to Bangkok",
           "4★ hotels with daily breakfast",
           "Phi Phi and Phang Nga island tours",
           "Bangkok city tour with entry tickets",
@@ -315,14 +327,15 @@ export const destinations: Destination[] = [
   {
     slug: "singapore",
     name: "Singapore",
-    flag: "🇸🇬",
+    code: "SG",
     country: "Singapore",
     region: "international",
-    tagline: "Family • Luxury • Attractions",
+    area: "asia",
+    places: "Sentosa, Gardens by the Bay, Marina Bay",
     highlights: ["Gardens by the Bay","Universal Studios","Sentosa","Marina Bay Sands"],
     images: [U("1525625293386-3f8f99389edd"), U("1565967511849-76a60a516170"), U("1496939376851-89342e90adcd")],
     bestTime: "Year round",
-    blurb: "Spotless, walkable and packed with things to do. The most stress-free international holiday you can book for a family with kids.",
+    blurb: "Universal Studios, Gardens by the Bay and Marina Bay in four nights. A good fit for a family with children.",
     featured: true,
     packages: [
       {
@@ -341,12 +354,12 @@ export const destinations: Destination[] = [
           },
           {
             "day": "Day 2",
-            "title": "Sentosa & Universal Studios",
+            "title": "Sentosa and Universal Studios",
             "detail": "Full day at Universal Studios Singapore, cable car and Wings of Time in the evening."
           },
           {
             "day": "Day 3",
-            "title": "Gardens by the Bay & city tour",
+            "title": "Gardens by the Bay and city tour",
             "detail": "Flower Dome, Cloud Forest and the Supertree Grove, plus Merlion Park and Chinatown."
           },
           {
@@ -375,14 +388,15 @@ export const destinations: Destination[] = [
   {
     slug: "europe",
     name: "Europe",
-    flag: "🇪🇺",
-    country: "Italy • France • Switzerland",
+    code: "EU",
+    country: "Italy, France and Switzerland",
     region: "international",
-    tagline: "Italy • France • Switzerland",
+    area: "europe",
+    places: "Rome, Switzerland, Paris",
     highlights: ["Eiffel Tower","Jungfraujoch","Venice canals","Swiss Alps"],
     images: [U("1499856871958-5b9627545d1a"), U("1502602898657-3e91760cbb34"), U("1467269204594-9661b134dd2b")],
-    bestTime: "April – September",
-    blurb: "Three countries, one unforgettable route. Alpine trains, Parisian evenings and Italian mornings — paced so you actually enjoy it.",
+    bestTime: "April to September",
+    blurb: "Rome, Venice, Lucerne, Jungfraujoch and Paris in ten days, by coach, with Indian dinners and a Yeto tour manager.",
     featured: true,
     packages: [
       {
@@ -417,7 +431,7 @@ export const destinations: Destination[] = [
           {
             "day": "Day 5",
             "title": "Into Switzerland",
-            "detail": "Scenic drive to Lucerne, Chapel Bridge and Lake Lucerne."
+            "detail": "Drive to Lucerne for Chapel Bridge and Lake Lucerne."
           },
           {
             "day": "Day 6",
@@ -461,14 +475,15 @@ export const destinations: Destination[] = [
   {
     slug: "malaysia",
     name: "Malaysia",
-    flag: "🇲🇾",
+    code: "MY",
     country: "Malaysia",
     region: "international",
-    tagline: "Kuala Lumpur • Langkawi",
+    area: "asia",
+    places: "Kuala Lumpur, Genting, Langkawi",
     highlights: ["Petronas Towers","Batu Caves","Langkawi Sky Bridge","Genting Highlands"],
     images: [U("1596422846543-75c6fc197f07"), U("1508062878650-88b52897f298"), U("1519181245277-cffeb31da2e3")],
-    bestTime: "December – April",
-    blurb: "City skylines and island cable cars at a price that leaves room for the shopping. Malaysia pairs beautifully with Singapore.",
+    bestTime: "December to April",
+    blurb: "Kuala Lumpur, Genting Highlands and Langkawi, with the cable cars at Genting and Langkawi included.",
     featured: true,
     packages: [
       {
@@ -513,7 +528,7 @@ export const destinations: Destination[] = [
         ],
         inclusions: [
           "Return economy flights",
-          "Internal KL–Langkawi flight",
+          "Flight from Kuala Lumpur to Langkawi",
           "4★ hotels with daily breakfast",
           "Genting and Langkawi cable car tickets",
           "Island-hopping tour",
@@ -526,14 +541,15 @@ export const destinations: Destination[] = [
   {
     slug: "indonesia",
     name: "Indonesia",
-    flag: "🇮🇩",
+    code: "ID",
     country: "Indonesia",
     region: "international",
-    tagline: "Bali • Temples • Rice terraces",
+    area: "asia",
+    places: "Ubud, Nusa Penida, Uluwatu",
     highlights: ["Uluwatu Temple","Tegallalang","Nusa Penida","Ubud"],
     images: [U("1537996194471-e657df975ab4"), U("1518548419970-58e3b4079ab2"), U("1555400038-63f5ba517a47")],
-    bestTime: "April – October",
-    blurb: "Cliff-edge temples, emerald rice terraces and villa mornings. A good fit for honeymoons and friends' trips alike.",
+    bestTime: "April to October",
+    blurb: "Bali in six days: Nusa Penida, Ubud, Uluwatu and a Kecak dance evening. Suits honeymoons and trips with friends.",
     featured: false,
     packages: [
       {
@@ -594,17 +610,18 @@ export const destinations: Destination[] = [
   {
     slug: "india",
     name: "India",
-    flag: "🇮🇳",
+    code: "IN",
     country: "India",
     region: "domestic",
-    tagline: "Heritage • Hill stations • Coast",
+    area: "india",
+    places: "Taj Mahal, Jaipur, Kerala backwaters, Goa",
     highlights: ["Taj Mahal", "Jaipur", "Kerala backwaters", "Goa beaches"],
     images: [
       U("1524492412937-b28074a5d7da"),
       U("1477587458883-47145ed94245"),
       U("1599661046289-e31897846e41"),
     ],
-    bestTime: "October – March",
+    bestTime: "October to March",
     blurb:
       "Forts and palaces in Rajasthan, backwaters in Kerala, beaches in Goa and mountains in the north. Tell us what you want and we will plan the route.",
     featured: false,
@@ -613,46 +630,46 @@ export const destinations: Destination[] = [
   {
     slug: "sri-lanka",
     name: "Sri Lanka",
-    flag: "🇱🇰",
+    code: "LK",
     country: "Sri Lanka",
     region: "international",
-    tagline: "Beaches • Tea country • Heritage",
+    area: "india",
+    places: "Sigiriya, Kandy, Ella, Galle Fort",
     highlights: ["Sigiriya", "Kandy", "Ella", "Galle Fort"],
     images: [U("1566296314736-6eaac1ca0cb9")],
-    bestTime: "December – March",
-    blurb:
-      "A compact island with ancient rock fortresses, hill-country train rides and long beaches. Easy to combine into one trip.",
+    bestTime: "December to March",
+    blurb: "Sigiriya rock fortress, Kandy, the hill-country train to Ella and Galle Fort. A small island, so it is easy to cover in one trip.",
     featured: false,
     packages: [],
   },
   {
     slug: "nepal",
     name: "Nepal",
-    flag: "🇳🇵",
+    code: "NP",
     country: "Nepal",
     region: "international",
-    tagline: "Himalaya • Temples • Lakes",
+    area: "india",
+    places: "Kathmandu, Pokhara, Chitwan",
     highlights: ["Kathmandu", "Pokhara", "Boudhanath Stupa", "Chitwan"],
     images: [U("1605640840605-14ac1855827b"), U("1544735716-392fe2489ffa")],
-    bestTime: "March – May, October – November",
-    blurb:
-      "Old temple squares in Kathmandu, a lakeside town in Pokhara and the Himalaya on the horizon. A short flight from India.",
+    bestTime: "March to May, October to November",
+    blurb: "Kathmandu's old temple squares, the lakeside town of Pokhara and views of the Himalaya. A short flight from India.",
     featured: false,
     packages: [],
   },
   {
     slug: "bhutan",
     name: "Bhutan",
-    flag: "🇧🇹",
+    code: "BT",
     country: "Bhutan",
     region: "international",
-    tagline: "Monasteries • Valleys • Mountains",
+    area: "india",
+    places: "Paro, Thimphu, Punakha",
     highlights: ["Paro Taktsang", "Thimphu", "Punakha Dzong", "Phobjikha Valley"],
     // TODO-CONFIRM: stand-in Himalayan photo, replace with a Bhutan photo.
     images: [U("1506905925346-21bda4d32df4")],
-    bestTime: "March – May, September – November",
-    blurb:
-      "Mountain monasteries, fortress-monasteries called dzongs and quiet valleys. A small country that rewards a slower pace.",
+    bestTime: "March to May, September to November",
+    blurb: "Paro Taktsang, Thimphu, Punakha Dzong and the Phobjikha Valley. A dzong is a fortress-monastery.",
     featured: false,
     packages: [],
   },
@@ -672,110 +689,101 @@ export const leadPackage = (d: Destination): Package | undefined => d.packages[0
 
 const dest = (slug: string) => getDestination(slug)!;
 
+/** "5 nights, 6 days": the one way trip length is written on the site. */
+export const formatStay = (nights: number, days: number) =>
+  `${nights} ${nights === 1 ? "night" : "nights"}, ${days} ${days === 1 ? "day" : "days"}`;
+
+const departure = (
+  slug: string,
+  packageSlug: string,
+  name: string,
+  window: string,
+  includes: string[],
+): Departure => {
+  const d = dest(slug);
+  const pkg = d.packages.find((p) => p.slug === packageSlug)!;
+  return {
+    slug,
+    packageSlug,
+    name,
+    code: d.code,
+    window,
+    nights: pkg.nights,
+    days: pkg.days,
+    fromPrice: pkg.fromPrice,
+    priceStatus: pkg.priceStatus,
+    includes,
+    images: d.images,
+  };
+};
+
+// TODO-CONFIRM: departure windows and the tour-manager promise on all
+// departures below are placeholders from the demo, not confirmed dates.
 export const departures: Departure[] = [
-  {
-    slug: "vietnam",
-    // TODO-CONFIRM: departure windows, badges and tour-manager promises on all
-    // departures below are demo placeholders, not confirmed dates.
-    packageSlug: "vietnam",
-    name: "Vietnam — Holi 2027",
-    flag: "🇻🇳",
-    badge: "Flagship departure",
-    window: "March 2027",
-    duration: "6 Nights / 7 Days",
-    fromPrice: 58900,
-    priceStatus: "placeholder",
-    includes: ["Flights", "4★ hotels", "Ha Long cruise", "Tour manager"],
-    images: dest("vietnam").images,
-  },
-  {
-    slug: "dubai",
-    packageSlug: "dubai",
-    name: "Dubai",
-    flag: "🇦🇪",
-    window: "Monthly departures",
-    duration: "5 Nights / 6 Days",
-    fromPrice: 64900,
-    priceStatus: "placeholder",
-    includes: ["Flights", "Desert safari", "Burj Khalifa", "Tour manager"],
-    images: dest("dubai").images,
-  },
-  {
-    slug: "thailand",
-    packageSlug: "thailand",
-    name: "Thailand",
-    flag: "🇹🇭",
-    window: "Nov – Mar departures",
-    duration: "5 Nights / 6 Days",
-    fromPrice: 52900,
-    priceStatus: "placeholder",
-    includes: ["Flights", "Island tours", "Bangkok city tour", "Transfers"],
-    images: dest("thailand").images,
-  },
-  {
-    slug: "singapore",
-    packageSlug: "singapore",
-    name: "Singapore",
-    flag: "🇸🇬",
-    badge: "Family favourite",
-    window: "Year-round departures",
-    duration: "4 Nights / 5 Days",
-    fromPrice: 71900,
-    priceStatus: "placeholder",
-    includes: ["Flights", "Universal Studios", "Gardens by the Bay", "Transfers"],
-    images: dest("singapore").images,
-  },
-  {
-    slug: "europe",
-    packageSlug: "europe",
-    name: "Europe",
-    flag: "🇪🇺",
-    window: "Apr – Sep departures",
-    duration: "9 Nights / 10 Days",
-    fromPrice: 189900,
-    priceStatus: "placeholder",
-    includes: ["Flights", "3 countries", "Indian meals", "Tour manager"],
-    images: dest("europe").images,
-  },
-  {
-    slug: "indonesia",
-    packageSlug: "bali",
-    name: "Bali",
-    flag: "🇮🇩",
-    window: "Apr – Oct departures",
-    duration: "5 Nights / 6 Days",
-    fromPrice: 54900,
-    priceStatus: "placeholder",
-    includes: ["Flights", "Nusa Penida", "Ubud tour", "Private transfers"],
-    images: dest("indonesia").images,
-  },
+  departure("vietnam", "vietnam", "Vietnam for Holi 2027", "March 2027", [
+    "Flights",
+    "4★ hotels",
+    "Ha Long cruise",
+  ]),
+  departure("dubai", "dubai", "Dubai", "Monthly departures", [
+    "Flights",
+    "Desert safari",
+    "Burj Khalifa",
+  ]),
+  departure("thailand", "thailand", "Thailand", "November to March", [
+    "Flights",
+    "Island tours",
+    "Bangkok city tour",
+  ]),
+  departure("singapore", "singapore", "Singapore", "All year", [
+    "Flights",
+    "Universal Studios",
+    "Gardens by the Bay",
+  ]),
+  departure("europe", "europe", "Europe", "April to September", [
+    "Flights",
+    "3 countries",
+    "Indian dinners",
+  ]),
+  departure("indonesia", "bali", "Indonesia (Bali)", "April to October", [
+    "Flights",
+    "Nusa Penida",
+    "Ubud tour",
+  ]),
 ];
+
+/** Filter chips for the destination grid. Counts come from the data. */
+export const AREAS: { value: Area; label: string }[] = [
+  { value: "asia", label: "Asia" },
+  { value: "gulf", label: "Gulf" },
+  { value: "europe", label: "Europe" },
+  { value: "india", label: "India and neighbours" },
+];
+
+const NUMBER_WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"];
+const inWords = (n: number) => NUMBER_WORDS[n] ?? String(n);
 
 export const whyYeto = [
   {
     icon: "globe",
-    title: "Global Destinations",
-    body: "From Dubai and Europe to Thailand, Vietnam and Bhutan, plus holidays within India. Routes planned and paced around how you want to travel.",
+    title: `${inWords(destinations.length)[0].toUpperCase()}${inWords(destinations.length).slice(1)} destinations`,
+    body: `India plus ${inWords(destinations.length - 1)} places across Asia, the Gulf and Europe.`,
   },
   {
     icon: "handshake",
-    title: "Trusted Partners",
-    body: "Hotels, local operators and on-ground partners in the destinations we sell.",
+    title: "Local partners",
+    // TODO-CONFIRM: partner claim has not been confirmed by the client.
+    body: "We work with hotels and local operators in the places we sell, so there is someone on the ground.",
   },
   {
-    icon: "rupee",
-    title: "Transparent Pricing",
-    body: "Clear packages with inclusions and exclusions written out in full. No surprises after you have paid.",
-  },
-  {
-    icon: "family",
-    title: "Group Travel",
-    body: "Departures designed for families, friend circles and organisations — with a tour manager who travels with you.",
+    icon: "list",
+    title: "Clear inclusions",
+    body: "Every package lists what is included and what is not, before you pay anything.",
   },
   {
     icon: "phone",
-    title: "Personal Assistance",
-    body: "A real travel team to talk to, from the first enquiry to the day you land back home.",
+    title: "Talk to a person",
+    body: "Our team in Nagpur answers your questions before you book.",
   },
 ];
 

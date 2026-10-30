@@ -49,6 +49,19 @@ export default function Reveal() {
 
     observeAll();
 
+    // Failsafe: if the observer is late (slow main thread, restored scroll
+    // position), still show anything already on screen so no block stays hidden.
+    const revealOnScreen = () =>
+      document.querySelectorAll(".reveal:not(.is-visible)").forEach((el) => {
+        const r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight && r.bottom > 0) {
+          reveal(el);
+          io.unobserve(el);
+        }
+      });
+    const timers = [300, 1200, 3000].map((ms) => window.setTimeout(revealOnScreen, ms));
+    window.addEventListener("scroll", revealOnScreen, { passive: true });
+
     let queued = 0;
     const mo = new MutationObserver(() => {
       if (queued) return;
@@ -61,6 +74,8 @@ export default function Reveal() {
 
     return () => {
       if (queued) cancelAnimationFrame(queued);
+      timers.forEach(clearTimeout);
+      window.removeEventListener("scroll", revealOnScreen);
       mo.disconnect();
       io.disconnect();
     };

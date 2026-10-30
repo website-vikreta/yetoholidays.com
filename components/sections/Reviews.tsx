@@ -45,7 +45,6 @@ export default function Reviews() {
   return (
     <Section className="bg-ocean-50">
       <SectionHeading
-        eyebrow="Travellers"
         title="What our travellers say"
         align="center"
       />

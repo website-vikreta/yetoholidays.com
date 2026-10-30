@@ -19,7 +19,7 @@ export default function DestinationsPage() {
       <section className="relative flex h-[45svh] min-h-[320px] w-full items-end overflow-hidden bg-ocean-950">
         <SmartImage
           src={heroImages}
-          alt="Collage of Yeto Holidays destinations around the world"
+          alt={`${destinations[0].name}, ${destinations[0].country}`}
           className="absolute inset-0 h-full w-full"
           sizes="100vw"
           priority
@@ -33,8 +33,7 @@ export default function DestinationsPage() {
             Every Yeto destination
           </h1>
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-white/80 sm:text-base">
-            Holidays across India, Asia, the Gulf and Europe, each one planned
-            around you.
+            Holidays across India, Asia, the Gulf and Europe.
           </p>
         </div>
       </section>

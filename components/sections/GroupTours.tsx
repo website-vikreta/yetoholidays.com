@@ -1,6 +1,7 @@
+import Flag from "@/components/Flag";
 import SmartImage from "@/components/SmartImage";
 import { ButtonLink, Section, SectionHeading } from "@/components/ui";
-import { departures, formatINR, type Departure } from "@/lib/data";
+import { departures, formatINR, formatStay, type Departure } from "@/lib/data";
 
 function CheckIcon() {
   return (
@@ -29,18 +30,13 @@ function TourCard({ tour }: { tour: Departure }) {
           src={tour.images}
           alt={`${tour.name} group tour`}
           className="aspect-[4/3] w-full"
-          sizes="(max-width: 640px) 82vw, (max-width: 1024px) 50vw, 33vw"
+          sizes="(max-width: 640px) 82vw, (max-width: 1024px) 50vw, 384px"
         />
-        {tour.badge ? (
-          <span className="absolute left-4 top-4 rounded-full bg-sand-400 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-wide text-ocean-950 shadow">
-            {tour.badge}
-          </span>
-        ) : null}
       </div>
 
       <div className="flex flex-1 flex-col p-5 sm:p-6">
-        <h3 className="font-display text-xl text-ocean-900">
-          <span className="mr-1.5">{tour.flag}</span>
+        <h3 className="flex items-center gap-2 font-display text-xl text-ocean-900">
+          <Flag code={tour.code} />
           {tour.name}
         </h3>
         <p className="mt-1 text-xs font-medium uppercase tracking-wide text-ocean-800/55">
@@ -60,7 +56,7 @@ function TourCard({ tour }: { tour: Departure }) {
             </p>
           </div>
           <p className="text-right text-sm font-medium text-ocean-800/70">
-            {tour.duration}
+            {formatStay(tour.nights, tour.days)}
           </p>
         </div>
 
@@ -82,7 +78,7 @@ function TourCard({ tour }: { tour: Departure }) {
           size="md"
           className="mt-6 w-full"
         >
-          View Tour
+          See itinerary
         </ButtonLink>
       </div>
     </article>
@@ -93,9 +89,8 @@ export default function GroupTours() {
   return (
     <Section id="tours" className="bg-gradient-to-b from-white to-ocean-50">
       <SectionHeading
-        eyebrow="Yeto Group Experiences"
-        title="Travel together. Celebrate together. Create memories together."
-        intro="Fixed-departure group tours led by a Yeto tour manager, from first pickup to final drop-off."
+        title="Join a group departure"
+        intro="Fixed dates and a set itinerary, with a Yeto tour manager travelling with the group."
       />
 
       <div className="reveal -mx-5 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 sm:mx-0 sm:grid sm:snap-none sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:px-0 lg:grid-cols-3">
@@ -105,7 +100,8 @@ export default function GroupTours() {
       </div>
 
       <p className="reveal mt-6 text-xs text-ocean-800/75">
-        Prices are indicative starting fares per person.
+        Prices are starting fares per person and change with travel date,
+        availability and departure city.
       </p>
     </Section>
   );

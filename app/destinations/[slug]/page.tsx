@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import Flag from "@/components/Flag";
 import SmartImage from "@/components/SmartImage";
 import { ButtonLink } from "@/components/ui";
 import {
   destinations,
   formatINR,
+  formatStay,
   getDestination,
   leadPackage,
 } from "@/lib/data";
@@ -33,7 +35,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${destination.name} Tour Package`,
+    title: `${destination.name} tour package`,
     description: destination.blurb,
   };
 }
@@ -77,7 +79,7 @@ export default async function DestinationPage({
   const others = destinations.filter((d) => d.slug !== destination.slug).slice(0, 3);
   const pkg = leadPackage(destination);
   const enquiryMessage = pkg
-    ? `Hi Yeto Holidays, I'd like to enquire about the ${destination.name} package (${pkg.nights}N/${pkg.days}D). Please share more details.`
+    ? `Hi Yeto Holidays, I'd like to enquire about the ${destination.name} package (${formatStay(pkg.nights, pkg.days)}). Please share more details.`
     : `Hi Yeto Holidays, I'd like to enquire about a ${destination.name} holiday. Please share more details.`;
   const whatsappHref = whatsappLink(enquiryMessage);
   const quoteHref = `/plan?destination=${destination.slug}`;
@@ -113,19 +115,17 @@ export default async function DestinationPage({
             <span className="text-white">{destination.name}</span>
           </nav>
 
-          <h1 className="mt-4 font-display text-4xl leading-[1.05] text-white sm:text-5xl lg:text-6xl">
-            <span className="mr-2">{destination.flag}</span>
+          <h1 className="mt-4 flex items-center gap-3 font-display text-4xl leading-[1.05] text-white sm:text-5xl lg:text-6xl">
+            <Flag code={destination.code} className="!w-8 sm:!w-10" />
             {destination.name}
           </h1>
           <p className="mt-3 max-w-xl text-sm text-white/85 sm:text-base">
-            {destination.tagline}
+            {destination.places}
           </p>
 
           <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs font-medium text-white/80 sm:text-sm">
             {pkg ? (
-              <li>
-                {pkg.nights} Nights / {pkg.days} Days
-              </li>
+              <li>{formatStay(pkg.nights, pkg.days)}</li>
             ) : null}
             <li className={pkg ? "border-l border-white/25 pl-6" : ""}>
               Best time: {destination.bestTime}
@@ -310,9 +310,7 @@ export default async function DestinationPage({
                   <p className="text-sm text-ocean-800/60">per person</p>
 
                   <div className="mt-5 space-y-2 text-sm text-ocean-800/75">
-                    <p>
-                      {pkg.nights} Nights / {pkg.days} Days
-                    </p>
+                    <p>{formatStay(pkg.nights, pkg.days)}</p>
                     <p>Best time: {destination.bestTime}</p>
                   </div>
                 </>
@@ -376,15 +374,19 @@ export default async function DestinationPage({
                   sizes="(max-width: 640px) 100vw, 33vw"
                 />
                 <div className="p-4">
-                  <h3 className="font-display text-lg text-ocean-900">
-                    <span className="mr-1">{other.flag}</span>
+                  <h3 className="flex items-center gap-2 font-display text-lg text-ocean-900">
+                    <Flag code={other.code} />
                     {other.name}
                   </h3>
                   <p className="mt-1 text-xs font-medium text-ocean-800/60">
                     {leadPackage(other) ? (
                       <>
-                        from {formatINR(leadPackage(other)!.fromPrice)} &middot;{" "}
-                        {leadPackage(other)!.nights}N / {leadPackage(other)!.days}D
+                        <span className="block">
+                          From {formatINR(leadPackage(other)!.fromPrice)} per person
+                        </span>
+                        <span className="block">
+                          {formatStay(leadPackage(other)!.nights, leadPackage(other)!.days)}
+                        </span>
                       </>
                     ) : (
                       "Price on request"

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import Flag from "@/components/Flag";
 import { ButtonLink } from "@/components/ui";
 import { destinations, getDestination } from "@/lib/data";
 import { whatsappLink } from "@/lib/site";
@@ -52,8 +53,8 @@ export default async function BookPage({
           <span className="inline-block text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-sand-300">
             Book now
           </span>
-          <h1 className="mt-3 max-w-xl font-display text-3xl leading-[1.1] text-white sm:text-4xl lg:text-5xl">
-            <span className="mr-2">{destination.flag}</span>
+          <h1 className="mt-3 flex max-w-xl items-center gap-3 font-display text-3xl leading-[1.1] text-white sm:text-4xl lg:text-5xl">
+            <Flag code={destination.code} className="!w-7 sm:!w-9" />
             {destination.name}
           </h1>
         </div>

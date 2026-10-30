@@ -16,11 +16,11 @@ const STEPS = [
   },
   {
     title: "We call you back with a quote",
-    body: "A tailored plan with pricing options, shared with you by the Yeto team.",
+    body: "A plan with pricing options, shared with you by the Yeto team.",
   },
   {
-    title: "We lock it in together",
-    body: "Once you're happy, secure your booking with an advance payment online. Visa approval stays with the embassy.",
+    title: "You confirm your booking",
+    body: "When you are happy with the plan, pay an advance online to confirm your booking. Visa decisions are made by the embassy.",
   },
 ];
 
@@ -34,14 +34,12 @@ export default function PlanPage() {
       {/* Hero */}
       <section className="bg-ocean-900 pb-14 pt-28 sm:pb-16 sm:pt-32">
         <div className="mx-auto max-w-6xl px-5 sm:px-8">
-          <span className="inline-block text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-sand-300">
-            Plan my trip
-          </span>
-          <h1 className="mt-3 max-w-xl font-display text-3xl leading-[1.1] text-white sm:text-4xl lg:text-5xl">
+          <h1 className="max-w-xl font-display text-3xl leading-[1.1] text-white sm:text-4xl lg:text-5xl">
             Plan my trip
           </h1>
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-white/75 sm:text-base">
-            Tell us where you want to go. We&apos;ll take care of the rest.
+            Tell us where and when you want to travel. Our team will call you
+            back with a quote.
           </p>
         </div>
       </section>
