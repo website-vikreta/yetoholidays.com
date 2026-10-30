@@ -28,7 +28,7 @@ export default function DestinationTicket({
       main={
         <div>
           <div className="relative h-44 overflow-hidden sm:h-52">
-            <Parallax speed={0.08} className="absolute inset-x-0 -inset-y-[10%]">
+            <Parallax speed={0.08} className="absolute inset-x-0 -inset-y-[16%]">
               <div className="ticket-img h-full w-full">
                 <SmartImage
                   src={destination.images}
@@ -52,9 +52,11 @@ export default function DestinationTicket({
         <div className="grid h-full grid-cols-2 content-start gap-x-3 gap-y-3 p-4 sm:block sm:space-y-3 sm:p-3.5">
           <div>
             <p className="ticket-label">Destination</p>
-            <p className="font-display text-xl leading-tight text-ocean-900">
-              {destination.code ?? "Domestic"}
-            </p>
+            {destination.code ? (
+              <p className="font-display text-xl leading-tight text-ocean-900">{destination.code}</p>
+            ) : (
+              <p className="font-display text-sm font-medium uppercase leading-tight tracking-wide text-ocean-900">Domestic</p>
+            )}
           </div>
           {pkg ? (
             <>

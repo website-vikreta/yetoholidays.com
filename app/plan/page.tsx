@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { site, whatsappDisplay } from "@/lib/site";
+import Ticket from "@/components/ui/Ticket";
+import WaveEdge from "@/components/ui/WaveEdge";
 import PlanForm from "./PlanForm";
 
 export const metadata: Metadata = {
@@ -32,7 +34,7 @@ export default function PlanPage() {
   return (
     <div className="bg-sand-50">
       {/* Hero */}
-      <section className="bg-ocean-900 pb-14 pt-28 sm:pb-16 sm:pt-32">
+      <section className="bg-ocean-900 pb-20 pt-28 sm:pb-24 sm:pt-32">
         <div className="mx-auto max-w-6xl px-5 sm:px-8">
           <h1 className="max-w-xl font-display text-3xl leading-[1.1] text-white sm:text-4xl lg:text-5xl">
             Plan my trip
@@ -43,6 +45,8 @@ export default function PlanPage() {
           </p>
         </div>
       </section>
+
+      <WaveEdge className="text-sand-50" />
 
       <section className="py-12 sm:py-16">
         <div className="mx-auto grid max-w-6xl grid-cols-1 px-5 sm:px-8 gap-10 lg:grid-cols-[1fr_360px] lg:gap-14">
@@ -58,7 +62,11 @@ export default function PlanPage() {
 
           {/* Reassurance column */}
           <aside className="space-y-8">
-            <div className="rounded-2xl border border-ocean-900/10 bg-white p-6">
+            <Ticket
+              shape="long"
+              className="reveal-settle"
+              main={
+            <div className="p-6">
               <h2 className="font-display text-xl text-ocean-900">
                 What happens next
               </h2>
@@ -80,9 +88,15 @@ export default function PlanPage() {
                 ))}
               </ol>
             </div>
+              }
+            />
 
             {hasContact ? (
-              <div className="rounded-2xl border border-ocean-900/10 bg-white p-6">
+              <Ticket
+                shape="long"
+                className="reveal-settle"
+                main={
+              <div className="p-6">
                 <h2 className="font-display text-xl text-ocean-900">
                   Talk to us directly
                 </h2>
@@ -115,6 +129,8 @@ export default function PlanPage() {
                   ) : null}
                 </div>
               </div>
+                }
+              />
             ) : null}
           </aside>
         </div>

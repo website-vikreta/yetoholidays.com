@@ -15,7 +15,9 @@ type TicketProps = {
    * long: one wide strip with half-circle notches at both ends, no perforation.
    */
   shape?: "pass" | "long";
-  /** Phones only: height of the stub, which sits below the main part. */
+  /** Stub sits below the main part at every width (narrow columns, sidebars). */
+  stacked?: boolean;
+  /** Height of the stub when it sits below the main part (phones, or `stacked`). */
   stubHeight?: string;
   className?: string;
   /** Classes for the inner `.ticket` element (grid columns, width). */
@@ -33,13 +35,14 @@ export default function Ticket({
   tone = "light",
   shape = "pass",
   stubHeight,
+  stacked = false,
   className = "",
   ticketClassName = "",
   "aria-label": ariaLabel,
 }: TicketProps) {
   const body = (
     <div
-      className={`ticket ticket-${tone} ${shape === "long" ? "ticket-long" : ""} ${ticketClassName}`}
+      className={`ticket ticket-${tone} ${shape === "long" ? "ticket-long" : ""} ${stacked ? "ticket-stack" : ""} ${ticketClassName}`}
       style={stubHeight ? ({ "--stub-h": stubHeight } as CSSProperties) : undefined}
     >
       <div className="ticket-main">{main}</div>

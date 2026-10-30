@@ -97,7 +97,8 @@ export default function PlanForm() {
 
   if (submitted) {
     return (
-      <div className="reveal rounded-2xl border border-ocean-900/10 bg-white p-6 sm:p-8">
+      <div className="ticket-wrap reveal-settle">
+      <div className="ticket ticket-long p-6 sm:p-8">
         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-ocean-50">
           <svg viewBox="0 0 20 20" fill="none" aria-hidden className="h-6 w-6">
             <path
@@ -149,13 +150,15 @@ export default function PlanForm() {
           Edit my details
         </button>
       </div>
+      </div>
     );
   }
 
   return (
+    <div className="ticket-wrap reveal-settle">
     <form
       onSubmit={handleSubmit}
-      className="reveal space-y-6 rounded-2xl border border-ocean-900/10 bg-white p-6 sm:p-8"
+      className="ticket ticket-long space-y-6 p-6 sm:p-8"
       noValidate
     >
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
@@ -323,5 +326,6 @@ export default function PlanForm() {
         Submit enquiry
       </button>
     </form>
+    </div>
   );
 }
