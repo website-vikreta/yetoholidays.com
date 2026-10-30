@@ -353,3 +353,14 @@ img {
     display: none;
   }
 }
+
+/* Closing call to action: the ticket rises into place as the section scrolls in. */
+.cta-rise {
+  transform: translate3d(0, calc((1 - var(--p, 1)) * 40px), 0);
+}
+
+/* Footer: faint outlined wave lines, 6 percent white. */
+.footer-waves {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='64' viewBox='0 0 240 64'%3E%3Cpath d='M0 20Q60 0 120 20T240 20M0 44Q60 24 120 44T240 44' fill='none' stroke='%23ffffff' stroke-opacity='0.06' stroke-width='1.2'/%3E%3C/svg%3E")
+    repeat;
+}

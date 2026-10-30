@@ -112,7 +112,7 @@ export const EXPERIENCE_IMAGES = {
     U("1524178232363-1fb2b075b655"),
     U("1552664730-d307ca884978"),
   ],
-  /** Decorative background behind the logo. Not a photo of any Yeto sign. */
+  /** Neutral landscape for the closing banner. Decorative. */
   landscape: [
     U("1501785888041-af3ef285b470"),
     U("1464822759023-fed622ff2c3b"),
