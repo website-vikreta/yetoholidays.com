@@ -82,7 +82,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${jakarta.variable} ${dmMono.variable}`}>
+    <html lang="en" className={`${fraunces.variable} ${jakarta.variable} ${dmMono.variable}`} suppressHydrationWarning>
       <head>
         {/* Runs before first paint, and is the only inline script on the page.
             1. Marks that scripting is available, so scroll-reveal blocks start

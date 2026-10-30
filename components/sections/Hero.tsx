@@ -1,111 +1,116 @@
-import FlightPath from "@/components/FlightPath";
+import Link from "next/link";
+import HeroShell from "@/components/sections/HeroShell";
+import QuickPlanTicket from "@/components/sections/QuickPlanTicket";
+import Parallax from "@/components/motion/Parallax";
 import SmartImage from "@/components/SmartImage";
-import { ButtonLink } from "@/components/ui";
-import { HERO_IMAGES, destinations } from "@/lib/data";
+import { ArrowRight, ButtonLink } from "@/components/ui";
+import { HERO_IMAGES } from "@/lib/data";
 
-const TRUST_POINTS = [
-  { label: `${destinations.length} destinations`, hideOnMobile: false },
-  { label: "Flights, hotels and sightseeing in one package", hideOnMobile: false },
-  { label: "Tour manager on group departures", hideOnMobile: true },
-  { label: "Help with visa paperwork", hideOnMobile: true },
-];
+/** A soft cloud blob, white at low opacity. Decorative. */
+function Cloud({ className }: { className: string }) {
+  return (
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 160 90" className={`absolute ${className}`}>
+      <path
+        d="M22 80 C0 80 -2 50 24 48 C27 24 60 14 80 32 C96 16 126 24 129 48 C152 46 162 80 136 80 Z"
+        fill="#fff"
+        fillOpacity="0.13"
+      />
+    </svg>
+  );
+}
+
+/** A few gull strokes, drawn as plain curves. Decorative. */
+function Gulls({ className }: { className: string }) {
+  return (
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 120 60" className={`absolute ${className}`} fill="none" stroke="#fff" strokeLinecap="round" strokeWidth="2.2" strokeOpacity="0.8">
+      <path d="M2 14 Q12 2 22 12 Q32 2 42 14" />
+      <path d="M62 34 Q70 25 78 32 Q86 25 94 34" strokeWidth="1.8" />
+      <path d="M92 8 Q98 1 104 7 Q110 1 116 8" strokeWidth="1.6" />
+    </svg>
+  );
+}
 
 export default function Hero() {
   return (
-    <section
-      data-scroll="out"
-      className="relative flex min-h-[100svh] w-full flex-col overflow-hidden bg-ocean-950"
-    >
-      {/* Keyframes for the background's slow Ken-Burns zoom. The global
-          prefers-reduced-motion rule in app/globals.css already forces every
-          animation-duration to ~0, so no extra guard is needed here. */}
-      <style>{`@keyframes hero-zoom { 0% { transform: scale(1); } 100% { transform: scale(1.09); } }`}</style>
+    <HeroShell className="relative isolate min-h-[100svh] w-full overflow-hidden bg-ocean-950">
+      {/* 1. Background photo, taller than the frame so it can move. */}
+      <div className="absolute inset-0 overflow-hidden">
+        <Parallax speed={0.35} className="absolute inset-x-0 -inset-y-[18%]">
+          <SmartImage
+            src={HERO_IMAGES}
+            alt="Boats among the limestone islands of Ha Long Bay, Vietnam"
+            className="h-full w-full"
+            sizes="100vw"
+            priority
+          />
+        </Parallax>
+      </div>
+      {/* Dark gradient from the bottom and the left keeps the text at 4.5 to 1 or better. */}
+      <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-ocean-950/85 via-ocean-950/35 to-ocean-950/25" />
+      <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-ocean-950/75 via-ocean-950/30 to-transparent" />
 
-      {/* Background photo: slow Ken-Burns zoom, plus a zoom-in as the page scrolls */}
-      <div className="fx-zoom-in absolute inset-0">
-        <SmartImage
-          src={HERO_IMAGES}
-          alt="Boats among the limestone islands of Ha Long Bay, Vietnam"
-          className="h-full w-full"
-          imageClassName="[animation:hero-zoom_18s_ease-in-out_infinite_alternate]"
-          sizes="100vw"
-          priority
-          overlay="strong"
-        />
-        {/* Extra scrim so the headline stays readable on any photo */}
-        <div
-          aria-hidden
-          className="absolute inset-0 bg-gradient-to-t from-ocean-950/45 via-transparent to-ocean-950/15"
-        />
+      {/* 2. Clouds */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+        <Parallax speed={0.2} className="absolute inset-0">
+          <Cloud className="left-[8%] top-[14%] w-56 sm:w-72" />
+        </Parallax>
+        <Parallax speed={0.12} className="absolute inset-0">
+          <Cloud className="right-[6%] top-[26%] w-44 sm:w-60" />
+        </Parallax>
       </div>
 
-      {/* Main content */}
-      <div className="fx-drift-up relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-5 pt-28 pb-16 text-center sm:px-8 lg:items-start lg:pt-32 lg:text-left">
-        <h1 className="max-w-3xl font-display text-[clamp(2.4rem,7vw,4.5rem)] font-medium leading-[1.05] tracking-tight text-white">
-          Plan your next holiday with Yeto
-        </h1>
+      {/* 3. Gulls drift up faster than the page */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+        <Parallax speed={-0.1} className="absolute inset-0">
+          <Gulls className="right-[14%] top-[20%] w-28 sm:w-40" />
+        </Parallax>
+      </div>
 
-        <p className="mt-5 max-w-xl text-balance text-base leading-relaxed text-white/85 sm:text-lg">
-          International and domestic trips, group departures, honeymoons and
-          corporate travel, planned by our team in Nagpur.
-        </p>
-
-        <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-          <ButtonLink href="/destinations" variant="white" size="lg">
-            See destinations
-          </ButtonLink>
-          {/* The flight route starts at this button's right edge. */}
-          <div className="relative">
-            <ButtonLink
-              href="/plan"
-              variant="ghostLight"
-              size="lg"
-              className="w-full sm:w-auto"
-            >
-              Plan my trip
-            </ButtonLink>
-            <FlightPath />
+      {/* Content */}
+      <div className="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-6xl flex-col justify-end px-5 pb-44 pt-32 sm:px-8 sm:pb-48">
+        <div className="hero-fade grid items-end gap-10 lg:grid-cols-[1fr_minmax(0,26rem)] lg:gap-14">
+          <div>
+            <h1 className="max-w-3xl font-display text-[clamp(2.5rem,6vw,5rem)] font-medium leading-[1.04] tracking-tight text-white">
+              Plan your next holiday with Yeto
+            </h1>
+            <p className="mt-5 max-w-xl text-base leading-relaxed text-white/90 sm:text-lg">
+              International and domestic trips, group departures, honeymoons and
+              corporate travel, planned by our team in Nagpur.
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
+              <ButtonLink href="/plan" variant="sand" size="lg">
+                Plan my trip
+              </ButtonLink>
+              <Link
+                href="/destinations"
+                className="group inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-white underline decoration-white/40 underline-offset-[6px] transition-colors hover:decoration-white"
+              >
+                See destinations
+                <ArrowRight className="transition-transform duration-200 group-hover:translate-x-1" />
+              </Link>
+            </div>
           </div>
+
+          <QuickPlanTicket />
         </div>
       </div>
 
-      {/* Trust strip */}
-      <div className="relative z-10 border-t border-white/15 bg-ocean-950/35 py-4 backdrop-blur-sm">
-        {/* A dot leads every item, so hiding items on small screens can never
-            leave a dangling divider. */}
-        <ul className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-5 gap-y-2 px-5 sm:px-8 lg:justify-start">
-          {TRUST_POINTS.map((point) => (
-            <li
-              key={point.label}
-              className={`flex items-center gap-2 text-[0.72rem] font-medium tracking-wide text-white/70 sm:text-xs ${
-                point.hideOnMobile ? "hidden sm:flex" : ""
-              }`}
-            >
-              <span
-                aria-hidden
-                className="h-1 w-1 shrink-0 rounded-full bg-sand-300/80"
-              />
-              {point.label}
-            </li>
-          ))}
-        </ul>
+      {/* 4. Foreground waves. The front one is the exact colour of the next section. */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-[150px] overflow-hidden sm:h-[170px]">
+        <Parallax speed={-0.06} className="absolute inset-0">
+          <svg focusable="false" viewBox="0 0 1440 170" preserveAspectRatio="none" className="h-full w-full">
+            <path d="M0 70 C240 20 480 120 720 70 S1200 20 1440 70 V170 H0 Z" className="fill-ocean-900" />
+          </svg>
+        </Parallax>
+        <Parallax speed={-0.12} className="absolute inset-0">
+          <svg focusable="false" viewBox="0 0 1440 170" preserveAspectRatio="none" className="h-full w-full">
+            <path d="M0 98 C200 62 420 134 700 98 S1180 58 1440 102 V170 H0 Z" className="fill-ocean-800" />
+          </svg>
+        </Parallax>
+        <svg focusable="false" viewBox="0 0 1440 170" preserveAspectRatio="none" className="absolute inset-0 h-full w-full">
+          <path d="M0 130 C260 100 520 154 800 126 S1260 100 1440 130 V170 H0 Z" fill="#fff" />
+        </svg>
       </div>
-
-      {/* Blend zone: the photo blurs and fades through a warm sun haze into the
-          white page below. It sits under the trust strip, so the strip's text
-          keeps its dark backing. */}
-      <div aria-hidden className="relative h-32 sm:h-40">
-        <div className="absolute inset-0 backdrop-blur-xl [mask-image:linear-gradient(to_top,black,transparent)]" />
-        <div className="fx-sun-haze absolute inset-0" />
-      </div>
-
-      {/* Scroll cue */}
-      <div className="fx-fade-out pointer-events-none absolute bottom-52 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2 text-white/60 sm:flex lg:left-auto lg:right-[max(2rem,calc((100vw-1152px)/2+2rem))] lg:translate-x-0">
-        <span className="text-[0.65rem] font-semibold uppercase tracking-[0.3em]">
-          Scroll
-        </span>
-        <span className="h-8 w-[1.5px] animate-pulse bg-gradient-to-b from-white/70 to-transparent" />
-      </div>
-    </section>
+    </HeroShell>
   );
 }
