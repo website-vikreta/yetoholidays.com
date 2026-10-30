@@ -62,7 +62,7 @@ export default function Hero() {
       {/* 3. Gulls drift up faster than the page */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
         <Parallax speed={-0.1} className="absolute inset-0">
-          <Gulls className="right-[14%] top-[20%] w-28 sm:w-40" />
+          <Gulls className="right-[6%] top-[9%] w-20 sm:right-[14%] sm:top-[20%] sm:w-40" />
         </Parallax>
       </div>
 

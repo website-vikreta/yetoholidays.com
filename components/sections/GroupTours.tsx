@@ -29,7 +29,7 @@ function DepartureTicket({ tour, index }: { tour: Departure; index: number }) {
       <Ticket
         href={`/destinations/${tour.slug}`}
         aria-label={`${tour.name}, ${tour.window}, ${stay}, from ${formatINR(tour.fromPrice)} per person`}
-        stubHeight="9.5rem"
+        stubHeight="11.5rem"
         ticketClassName="[--cut:72%]"
         main={
           <div className="grid gap-4 p-5 sm:p-6 md:grid-cols-[1.2fr_1fr] md:gap-8">

@@ -66,7 +66,7 @@ export default function Destinations() {
       {/* Everywhere else: a normal horizontal snap rail. */}
       <Section id="destinations-rail" className="rail-only">
         {heading}
-        <div className="-mx-5 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-8 pt-2 snap-rail sm:-mx-8 sm:gap-6 sm:px-8">
+        <div className="-mx-5 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-8 pt-2 snap-rail sm:-mx-8 sm:gap-6 sm:px-8 lg:mx-0 lg:snap-none lg:flex-wrap lg:overflow-visible lg:px-0">
           {featuredDestinations.map((destination) => (
             <div key={destination.slug} className="w-[84%] shrink-0 snap-center sm:w-[360px]">
               <DestinationTicket destination={destination} />
