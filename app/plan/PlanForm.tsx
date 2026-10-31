@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { destinations } from "@/lib/data";
 import { site, whatsappLink } from "@/lib/site";
 
@@ -27,7 +26,7 @@ type FormState = {
 function buildWhatsAppMessage(form: FormState): string {
   const destinationLabel =
     form.destination === "other"
-      ? "Somewhere else / not sure yet"
+      ? "Somewhere else or not sure yet"
       : destinations.find((d) => d.slug === form.destination)?.name ??
         form.destination;
 
@@ -48,11 +47,12 @@ function buildWhatsAppMessage(form: FormState): string {
   return lines.join("\n");
 }
 
-export default function PlanForm() {
-  const searchParams = useSearchParams();
+/** Values the hero ticket and destination pages put in the URL, read on the server. */
+export type PlanInitial = { destination: string; month: string; travellers: string };
+
+export default function PlanForm({ initial }: { initial: PlanInitial }) {
   // "bali" was its own destination in the first demo; it now lives in Indonesia.
-  const requested = searchParams.get("destination") ?? "";
-  const initialDestination = requested === "bali" ? "indonesia" : requested;
+  const initialDestination = initial.destination === "bali" ? "indonesia" : initial.destination;
 
   const [form, setForm] = useState<FormState>({
     name: "",
@@ -61,8 +61,8 @@ export default function PlanForm() {
     destination: destinations.some((d) => d.slug === initialDestination)
       ? initialDestination
       : "",
-    month: "",
-    travellers: "2",
+    month: initial.month,
+    travellers: initial.travellers,
     tripType: "Family",
     budget: "",
     message: "",
@@ -97,7 +97,8 @@ export default function PlanForm() {
 
   if (submitted) {
     return (
-      <div className="reveal rounded-2xl border border-ocean-900/10 bg-white p-6 sm:p-8">
+      <div className="ticket-wrap reveal-settle">
+      <div className="ticket ticket-long p-6 sm:p-8">
         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-ocean-50">
           <svg viewBox="0 0 20 20" fill="none" aria-hidden className="h-6 w-6">
             <path
@@ -116,8 +117,8 @@ export default function PlanForm() {
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-ocean-800/75 sm:text-base">
           {waHref || mailHref
-            ? "We've noted your enquiry details here in your browser. Our team isn't automatically notified yet, though — to make sure we see this right away, please send it to us using the button below. Your details will be pre-filled so you can review and send in one tap."
-            : "We've noted your enquiry details here in your browser, but online submission isn't connected yet, so our team has not received them. Please try again soon."}
+            ? "We have noted your enquiry in your browser, but our team is not notified automatically yet. To make sure we see it, please send it to us with the button below. Your details are already filled in, so you can check them and send in one tap."
+            : "We have noted your enquiry in your browser, but online submission is not connected yet, so our team has not received it. Please try again soon."}
         </p>
 
         {waHref ? (
@@ -149,13 +150,15 @@ export default function PlanForm() {
           Edit my details
         </button>
       </div>
+      </div>
     );
   }
 
   return (
+    <div className="ticket-wrap reveal-settle">
     <form
       onSubmit={handleSubmit}
-      className="reveal space-y-6 rounded-2xl border border-ocean-900/10 bg-white p-6 sm:p-8"
+      className="ticket ticket-long space-y-6 p-6 sm:p-8"
       noValidate
     >
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
@@ -219,10 +222,10 @@ export default function PlanForm() {
             <option value="">Select a destination</option>
             {destinations.map((d) => (
               <option key={d.slug} value={d.slug}>
-                {d.flag} {d.name}
+                {d.name}
               </option>
             ))}
-            <option value="other">Somewhere else / not sure yet</option>
+            <option value="other">Somewhere else or not sure yet</option>
           </select>
         </div>
 
@@ -287,7 +290,7 @@ export default function PlanForm() {
             value={form.budget}
             onChange={(e) => update("budget", e.target.value)}
             className={INPUT_CLASS}
-            placeholder="e.g. ₹60,000 – ₹80,000"
+            placeholder="For example ₹60,000 to ₹80,000"
           />
         </div>
 
@@ -323,5 +326,6 @@ export default function PlanForm() {
         Submit enquiry
       </button>
     </form>
+    </div>
   );
 }

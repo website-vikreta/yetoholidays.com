@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  /* Yeto brand — deep ocean blue + sand/beige + white */
+  /* Yeto brand, deep ocean blue + sand/beige + white */
   --color-ocean-50: #f0f7fb;
   --color-ocean-100: #dbecf6;
   --color-ocean-200: #bcdcee;
@@ -71,14 +71,16 @@ body {
    with JavaScript disabled or if hydration fails. The inline script in the
    layout sets `data-js` on <html> before first paint, and only then do these
    blocks start hidden and animate in.
-   `will-change` is deliberately omitted — promoting every reveal block to its
+   `will-change` is deliberately omitted, promoting every reveal block to its
    own compositor layer for the life of the page costs more than it buys. */
-:root[data-js] .reveal {
+:root[data-js] .reveal,
+:root[data-js] .reveal-up {
   opacity: 0;
   transform: translateY(24px);
 }
 
-:root[data-js] .reveal.is-visible {
+:root[data-js] .reveal.is-visible,
+:root[data-js] .reveal-up.is-visible {
   opacity: 1;
   transform: none;
   transition:
@@ -86,67 +88,53 @@ body {
     transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* reveal-mask: a heading's text slides up from behind a clipped line. Wrap the
+   text in <span class="reveal-mask-line">. The padding keeps descenders unclipped. */
+.reveal-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+.reveal-mask-line {
+  display: block;
+}
+:root[data-js] .reveal-mask .reveal-mask-line {
+  transform: translateY(115%);
+}
+:root[data-js] .reveal-mask.is-visible .reveal-mask-line {
+  transform: none;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* reveal-settle: tickets drop in, scale 0.97 to 1 and rotate 1.5deg to 0.
+   Set --dx on the element to make it arrive from the side. */
+:root[data-js] .reveal-settle {
+  opacity: 0;
+  transform: translateX(var(--dx, 0)) scale(0.97) rotate(1.5deg);
+}
+:root[data-js] .reveal-settle.is-visible {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  :root[data-js] .reveal {
+  :root[data-js] .reveal,
+  :root[data-js] .reveal-up,
+  :root[data-js] .reveal-settle {
     opacity: 1;
+    transform: none;
+  }
+  :root[data-js] .reveal-mask .reveal-mask-line {
     transform: none;
   }
 }
 
-/* Scroll effects. ScrollFX sets --p (0 to 1) on [data-scroll] elements; with no
-   JS or reduced motion it is unset, so every fallback below is the static state. */
-.fx-zoom-in {
-  transform: scale(calc(1 + var(--p, 0) * 0.25));
-  transform-origin: 50% 85%;
-}
-
-.fx-zoom-out {
-  transform: scale(calc(1.14 - var(--p, 0) * 0.14));
-}
-
-.fx-drift-up {
-  transform: translateY(calc(var(--p, 0) * 70px));
-  opacity: calc(1 - var(--p, 0) * 1.5);
-}
-
-.fx-fade-out {
-  opacity: calc(1 - var(--p, 0) * 5);
-}
-
-/* Soft sun haze that carries the hero photo into the white page below. */
-.fx-sun-haze {
-  background:
-    radial-gradient(
-      55% 100% at 50% 100%,
-      rgb(255 238 196 / 0.95) 0%,
-      rgb(255 214 150 / 0.6) 30%,
-      rgb(255 196 130 / 0.2) 55%,
-      transparent 75%
-    ),
-    linear-gradient(
-      to top,
-      #fff 0%,
-      rgb(255 255 255 / 0.85) 22%,
-      rgb(255 255 255 / 0) 100%
-    );
-}
-
-/* Hero flight route. Drawn in full without JS; with JS it starts hidden and
-   FlightPath draws it (instantly, in its final state, under reduced motion). */
-.flight-line {
-  stroke-dasharray: 1 1;
-}
-
-:root[data-js] .flight-line {
-  stroke-dashoffset: 1;
-}
-
-:root[data-js] .flight-plane {
-  opacity: 0;
-}
-
 /* Every photo sits on a brand gradient. If a remote image 404s, hide the
-   broken-image glyph and alt text so the gradient stands in cleanly — this is
+   broken-image glyph and alt text so the gradient stands in cleanly, this is
    the CSS-only replacement for gating visibility on a JS onLoad handler. */
 img {
   color: transparent;
@@ -172,4 +160,190 @@ img {
   outline: 2px solid var(--color-ocean-600);
   outline-offset: 3px;
   border-radius: 4px;
+}
+
+/* ---------- Ticket (boarding pass) ---------- */
+.ticket-wrap {
+  filter: drop-shadow(0 14px 22px rgb(14 47 69 / 0.16));
+  border-radius: 20px;
+}
+.ticket-link:focus-visible {
+  outline: 2px solid var(--color-ocean-600);
+  outline-offset: 3px;
+}
+
+.ticket {
+  --r: 14px; /* notch radius */
+  --cut: 70%; /* where the perforation sits */
+  --stub-h: 8.5rem; /* phones: stub height, sits below the main part */
+  --ticket-bg: #fff;
+  --ticket-stub-bg: var(--color-sand-50);
+  --ticket-ink: var(--color-ocean-900);
+  --ticket-line: rgb(14 47 69 / 0.22);
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--cut) 1fr;
+  overflow: hidden;
+  background: var(--ticket-bg);
+  color: var(--ticket-ink);
+  border-radius: 20px;
+  -webkit-mask:
+    radial-gradient(circle var(--r) at var(--cut) 0, #0000 98%, #000) top / 100% 51% no-repeat,
+    radial-gradient(circle var(--r) at var(--cut) 100%, #0000 98%, #000) bottom / 100% 51% no-repeat;
+  mask:
+    radial-gradient(circle var(--r) at var(--cut) 0, #0000 98%, #000) top / 100% 51% no-repeat,
+    radial-gradient(circle var(--r) at var(--cut) 100%, #0000 98%, #000) bottom / 100% 51% no-repeat;
+}
+.ticket::after {
+  /* the perforation */
+  content: "";
+  position: absolute;
+  top: var(--r);
+  bottom: var(--r);
+  left: var(--cut);
+  border-left: 2px dashed var(--ticket-line);
+  pointer-events: none;
+}
+.ticket-main {
+  min-width: 0;
+}
+.ticket-stub {
+  min-width: 0;
+  background: var(--ticket-stub-bg);
+}
+.ticket-sand {
+  --ticket-bg: var(--color-sand-100);
+  --ticket-stub-bg: var(--color-sand-200);
+}
+.ticket-ocean {
+  --ticket-bg: var(--color-ocean-900);
+  --ticket-stub-bg: var(--color-ocean-800);
+  --ticket-ink: #fff;
+  --ticket-line: rgb(255 255 255 / 0.35);
+}
+
+/* Long strip: half-circle notches at both ends, no perforation */
+.ticket-long {
+  display: block;
+  -webkit-mask:
+    radial-gradient(circle var(--r) at 0 50%, #0000 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle var(--r) at 100% 50%, #0000 98%, #000) right / 51% 100% no-repeat;
+  mask:
+    radial-gradient(circle var(--r) at 0 50%, #0000 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle var(--r) at 100% 50%, #0000 98%, #000) right / 51% 100% no-repeat;
+}
+.ticket-long::after {
+  display: none;
+}
+
+/* Phones: the stub drops below the main part and the perforation turns horizontal */
+@media (max-width: 639px) {
+  .ticket:not(.ticket-long) {
+    --cut: calc(100% - var(--stub-h));
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr var(--stub-h);
+    -webkit-mask:
+      radial-gradient(circle var(--r) at 0 var(--cut), #0000 98%, #000) left / 51% 100% no-repeat,
+      radial-gradient(circle var(--r) at 100% var(--cut), #0000 98%, #000) right / 51% 100% no-repeat;
+    mask:
+      radial-gradient(circle var(--r) at 0 var(--cut), #0000 98%, #000) left / 51% 100% no-repeat,
+      radial-gradient(circle var(--r) at 100% var(--cut), #0000 98%, #000) right / 51% 100% no-repeat;
+  }
+  .ticket:not(.ticket-long)::after {
+    top: var(--cut);
+    bottom: auto;
+    left: var(--r);
+    right: var(--r);
+    border-left: 0;
+    border-top: 2px dashed var(--ticket-line);
+  }
+}
+
+/* Field label on a ticket: DESTINATION, DURATION, BEST TIME, FROM, PER PERSON.
+   Solid ocean-700 (not 70 percent) so it holds 4.5 to 1 on white and sand-50. */
+.ticket-label {
+  font-family: var(--font-dm-mono), ui-monospace, monospace;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-ocean-700);
+}
+.ticket-ocean .ticket-label {
+  color: var(--color-ocean-200);
+}
+
+/* Route line that draws itself. pathLength is 1, so the offset is simply 1 - progress.
+   Without JavaScript or under reduced motion --p is unset or 1: the full line shows. */
+.route-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(1 - var(--p, 1));
+}
+
+/* Hero content fades and rises as the hero scrolls out (--p set by HeroShell). */
+.hero-fade {
+  opacity: clamp(0, calc(1 - var(--p, 0)), 1);
+  transform: translate3d(0, calc(var(--p, 0) * -40px), 0);
+}
+
+/* Destination tickets: the photo settles from a slight zoom as the ticket arrives. */
+:root[data-js] .reveal-settle .ticket-img {
+  transform: scale(1.08);
+}
+:root[data-js] .reveal-settle.is-visible .ticket-img {
+  transform: none;
+  transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  :root[data-js] .reveal-settle .ticket-img {
+    transform: none;
+  }
+}
+
+/* Destinations: a pinned horizontal row on large screens with a fine pointer and
+   motion allowed; a normal snap rail everywhere else. Both are in the HTML and
+   CSS picks one, so nothing shifts after load. */
+.pin-only {
+  display: none;
+}
+@media (min-width: 1024px) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .pin-only {
+    display: block;
+  }
+  .rail-only {
+    display: none;
+  }
+}
+
+/* Closing call to action: the ticket rises into place as the section scrolls in. */
+.cta-rise {
+  transform: translate3d(0, calc((1 - var(--p, 1)) * 40px), 0);
+}
+
+/* Footer: faint outlined wave lines, 6 percent white. */
+.footer-waves {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='64' viewBox='0 0 240 64'%3E%3Cpath d='M0 20Q60 0 120 20T240 20M0 44Q60 24 120 44T240 44' fill='none' stroke='%23ffffff' stroke-opacity='0.06' stroke-width='1.2'/%3E%3C/svg%3E")
+    repeat;
+}
+
+/* Stacked ticket: same as the phone layout at every width, for sidebars and narrow columns. */
+.ticket-stack:not(.ticket-long) {
+  --cut: calc(100% - var(--stub-h));
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr var(--stub-h);
+  -webkit-mask:
+    radial-gradient(circle var(--r) at 0 var(--cut), #0000 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle var(--r) at 100% var(--cut), #0000 98%, #000) right / 51% 100% no-repeat;
+  mask:
+    radial-gradient(circle var(--r) at 0 var(--cut), #0000 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle var(--r) at 100% var(--cut), #0000 98%, #000) right / 51% 100% no-repeat;
+}
+.ticket-stack:not(.ticket-long)::after {
+  top: var(--cut);
+  bottom: auto;
+  left: var(--r);
+  right: var(--r);
+  border-left: 0;
+  border-top: 2px dashed var(--ticket-line);
 }
