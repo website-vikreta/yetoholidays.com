@@ -14,7 +14,7 @@ export type SiteSettings = {
   legalName: string;
   /** Display date, e.g. "12 May 2022". */
   established: string;
-  /** TODO-CONFIRM: the tagline is the demo's text; the client says theirs is in Drive. */
+  /** Not confirmed by the client (they say theirs is in Drive). Footer only. */
   tagline: string;
   cin: string;
   url: string;
@@ -26,6 +26,10 @@ export type SiteSettings = {
     email: string;
   };
   socials: { instagram: string; facebook: string; linkedin: string };
+  /** Flip to true once Razorpay is live. Shows "Secure online payment". */
+  onlinePaymentLive: boolean;
+  /** Real Google rating and review count. Leave null until the client has them. */
+  googleRating: { rating: number; count: number; url: string } | null;
   licences: {
     gst: string;
     iata: string;
@@ -43,7 +47,7 @@ export const site: SiteSettings = {
   name: "Yeto Holidays",
   legalName: "Yeto Holidays Private Limited",
   established: "12 May 2022",
-  tagline: "Your Journey. Your Story. Your Yeto.",
+  tagline: "Your Journey. Your Story. Your Yeto.", // confirm with client
   cin: "U63000MH2022PTC382509",
   url: env(process.env.NEXT_PUBLIC_SITE_URL) || "https://yetoholidays.com",
   address: [
@@ -56,6 +60,8 @@ export const site: SiteSettings = {
     phone: env(process.env.NEXT_PUBLIC_PHONE),
     email: env(process.env.NEXT_PUBLIC_EMAIL),
   },
+  onlinePaymentLive: false,
+  googleRating: null,
   // TODO-CONFIRM: no social profiles confirmed yet; links stay hidden while empty.
   socials: { instagram: "", facebook: "", linkedin: "" },
   // TODO-CONFIRM: rendered only when filled.
@@ -63,6 +69,9 @@ export const site: SiteSettings = {
 };
 
 export const addressLine = site.address.join(", ");
+
+/** Opens the office in Google Maps. */
+export const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${site.name}, ${addressLine}`)}`;
 
 /** Display form of the digits-only WhatsApp number, empty when not set. */
 export const whatsappDisplay = site.contact.whatsapp

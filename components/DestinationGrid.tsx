@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
-import SmartImage from "@/components/SmartImage";
-import { formatINR, leadPackage, type Destination } from "@/lib/data";
+import DestinationTicket from "@/components/sections/DestinationTicket";
+import Divider from "@/components/ui/Divider";
+import type { Destination } from "@/lib/data";
 
 type Filter = "all" | Destination["region"];
 
@@ -23,68 +23,6 @@ const CHIP_BASE =
 const CHIP_ON = "border-ocean-900 bg-ocean-900 text-white";
 const CHIP_OFF =
   "border-ocean-900/20 bg-white text-ocean-900 hover:border-ocean-900/40";
-
-function DestinationCard({ destination }: { destination: Destination }) {
-  const pkg = leadPackage(destination);
-
-  return (
-    <Link
-      href={`/destinations/${destination.slug}`}
-      className="group flex flex-col overflow-hidden rounded-2xl border border-ocean-900/10 bg-white shadow-sm shadow-ocean-950/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-ocean-950/10"
-    >
-      <SmartImage
-        src={destination.images}
-        alt={`${destination.name}, ${destination.country}`}
-        className="aspect-[4/3] w-full"
-        imageClassName="transition-transform duration-500 ease-out group-hover:scale-105"
-        overlay="bottom"
-        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-      />
-
-      <div className="flex flex-1 flex-col p-5">
-        <div className="flex items-baseline justify-between gap-2">
-          <h3 className="font-display text-xl text-ocean-900">
-            <span className="mr-1.5">{destination.flag}</span>
-            {destination.name}
-          </h3>
-        </div>
-        <p className="mt-0.5 text-xs font-medium uppercase tracking-wide text-sand-600">
-          {destination.country}
-        </p>
-        <p className="mt-2 text-sm text-ocean-800/70">{destination.tagline}</p>
-
-        <div className="mt-4 flex flex-wrap gap-1.5">
-          {destination.highlights.slice(0, 3).map((h) => (
-            <span
-              key={h}
-              className="rounded-full bg-ocean-50 px-2.5 py-1 text-[0.7rem] font-medium text-ocean-800"
-            >
-              {h}
-            </span>
-          ))}
-        </div>
-
-        <div className="mt-auto flex items-center justify-between pt-5 text-sm">
-          {pkg ? (
-            <>
-              <span className="font-semibold text-ocean-900">
-                from {formatINR(pkg.fromPrice)}
-              </span>
-              <span className="text-ocean-800/60">
-                {pkg.nights}N / {pkg.days}D
-              </span>
-            </>
-          ) : (
-            <>
-              <span className="font-semibold text-ocean-900">Price on request</span>
-              <span className="text-ocean-800/60">Itinerary on enquiry</span>
-            </>
-          )}
-        </div>
-      </div>
-    </Link>
-  );
-}
 
 /**
  * Destinations grouped by International / Domestic, with a filter. The server
@@ -126,12 +64,14 @@ export default function DestinationGrid({
         Showing {groups.reduce((n, g) => n + g.items.length, 0)} destinations
       </p>
       <p className="mt-6 text-xs text-ocean-800/75">
-        Prices are indicative starting fares per person.
+        Prices are starting fares per person and change with travel date,
+        availability and departure city.
       </p>
 
-      <div className="mt-8 space-y-12">
-        {groups.map((group) => (
+      <div className="mt-8">
+        {groups.map((group, g) => (
           <section key={group.region} aria-labelledby={`group-${group.region}`}>
+            {g > 0 ? <Divider variant="dashed" className="!px-0 my-12" /> : null}
             <h2
               id={`group-${group.region}`}
               className="font-display text-2xl text-ocean-900"
@@ -140,7 +80,7 @@ export default function DestinationGrid({
             </h2>
             <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {group.items.map((destination) => (
-                <DestinationCard key={destination.slug} destination={destination} />
+                <DestinationTicket key={destination.slug} destination={destination} />
               ))}
             </div>
           </section>

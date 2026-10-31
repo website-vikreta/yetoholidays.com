@@ -1,11 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import Flag from "@/components/Flag";
+import Parallax from "@/components/motion/Parallax";
+import DestinationTicket from "@/components/sections/DestinationTicket";
 import SmartImage from "@/components/SmartImage";
+import Divider from "@/components/ui/Divider";
+import Ticket from "@/components/ui/Ticket";
 import { ButtonLink } from "@/components/ui";
 import {
   destinations,
   formatINR,
+  formatStay,
   getDestination,
   leadPackage,
 } from "@/lib/data";
@@ -33,7 +39,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${destination.name} Tour Package`,
+    title: `${destination.name} tour package`,
     description: destination.blurb,
   };
 }
@@ -77,7 +83,7 @@ export default async function DestinationPage({
   const others = destinations.filter((d) => d.slug !== destination.slug).slice(0, 3);
   const pkg = leadPackage(destination);
   const enquiryMessage = pkg
-    ? `Hi Yeto Holidays, I'd like to enquire about the ${destination.name} package (${pkg.nights}N/${pkg.days}D). Please share more details.`
+    ? `Hi Yeto Holidays, I'd like to enquire about the ${destination.name} package (${formatStay(pkg.nights, pkg.days)}). Please share more details.`
     : `Hi Yeto Holidays, I'd like to enquire about a ${destination.name} holiday. Please share more details.`;
   const whatsappHref = whatsappLink(enquiryMessage);
   const quoteHref = `/plan?destination=${destination.slug}`;
@@ -87,14 +93,21 @@ export default async function DestinationPage({
     <div className="bg-sand-50 pb-28 lg:pb-0">
       {/* Hero */}
       <section className="relative flex h-[70svh] min-h-[480px] w-full items-end overflow-hidden bg-ocean-950">
-        <SmartImage
-          src={destination.images}
-          alt={`${destination.name}, ${destination.country}`}
-          className="absolute inset-0 h-full w-full"
-          sizes="100vw"
-          priority
-          overlay="bottom"
-        />
+        <div className="absolute inset-0 overflow-hidden">
+          <Parallax speed={0.3} className="absolute inset-x-0 -inset-y-[15%]">
+            <SmartImage
+              src={destination.images}
+              alt={`${destination.name}, ${destination.country}`}
+              className="h-full w-full"
+              sizes="100vw"
+              priority
+              overlay="bottom"
+            />
+          </Parallax>
+        </div>
+        <div className="pointer-events-none absolute inset-x-0 bottom-2 z-10">
+          <Divider variant="wave" />
+        </div>
 
         <div className="relative z-10 mx-auto w-full max-w-6xl px-5 pb-8 pt-28 sm:px-8 sm:pb-12">
           <nav className="text-xs font-medium text-white/70" aria-label="Breadcrumb">
@@ -113,19 +126,17 @@ export default async function DestinationPage({
             <span className="text-white">{destination.name}</span>
           </nav>
 
-          <h1 className="mt-4 font-display text-4xl leading-[1.05] text-white sm:text-5xl lg:text-6xl">
-            <span className="mr-2">{destination.flag}</span>
+          <h1 className="mt-4 flex items-center gap-3 font-display text-4xl leading-[1.05] text-white sm:text-5xl lg:text-6xl">
+            <Flag code={destination.flag} className="!w-8 sm:!w-10" />
             {destination.name}
           </h1>
           <p className="mt-3 max-w-xl text-sm text-white/85 sm:text-base">
-            {destination.tagline}
+            {destination.places}
           </p>
 
           <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs font-medium text-white/80 sm:text-sm">
             {pkg ? (
-              <li>
-                {pkg.nights} Nights / {pkg.days} Days
-              </li>
+              <li>{formatStay(pkg.nights, pkg.days)}</li>
             ) : null}
             <li className={pkg ? "border-l border-white/25 pl-6" : ""}>
               Best time: {destination.bestTime}
@@ -170,7 +181,7 @@ export default async function DestinationPage({
                       {index !== pkg.itinerary.length - 1 && (
                         <span
                           aria-hidden
-                          className="absolute left-[15px] top-8 h-[calc(100%-0.5rem)] w-px bg-ocean-900/15"
+                          className="absolute left-[15px] top-8 h-[calc(100%-0.5rem)] border-l-2 border-dashed border-ocean-900/25"
                         />
                       )}
                       <span
@@ -179,7 +190,7 @@ export default async function DestinationPage({
                       >
                         {index + 1}
                       </span>
-                      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-sand-600">
+                      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-sand-700">
                         {item.day}
                       </p>
                       <h3 className="mt-1 font-display text-lg text-ocean-900 sm:text-xl">
@@ -193,8 +204,10 @@ export default async function DestinationPage({
                 </ol>
               </div>
 
+              <Divider variant="dashed" className="!px-0 mt-14" />
+
               {/* Inclusions */}
-              <div className="mt-14 grid grid-cols-1 gap-8 sm:grid-cols-2">
+              <div className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2">
                 <div className="reveal">
                   <h2 className="font-display text-2xl text-ocean-900 sm:text-3xl">
                     What&apos;s included
@@ -220,7 +233,7 @@ export default async function DestinationPage({
                     {NOT_INCLUDED.map((item) => (
                       <li
                         key={item}
-                        className="flex items-start gap-3 text-sm leading-relaxed text-ocean-800/60 sm:text-base"
+                        className="flex items-start gap-3 text-sm leading-relaxed text-ocean-800/80 sm:text-base"
                       >
                         <span aria-hidden className="mt-2 h-1 w-1 shrink-0 rounded-full bg-ocean-900/40" />
                         <span>{item}</span>
@@ -230,7 +243,7 @@ export default async function DestinationPage({
                 </div>
               </div>
 
-                <p className="reveal mt-6 text-xs leading-relaxed text-ocean-800/60 sm:text-sm">
+                <p className="reveal mt-6 text-xs leading-relaxed text-ocean-800/80 sm:text-sm">
                   {VISA_NOTE}
                 </p>
               </>
@@ -244,42 +257,29 @@ export default async function DestinationPage({
                   budget, so there is no fixed itinerary or price listed yet.
                   Request a quote and our team will call you back with a plan.
                 </p>
-                <p className="mt-3 text-xs leading-relaxed text-ocean-800/60 sm:text-sm">
+                <p className="mt-3 text-xs leading-relaxed text-ocean-800/80 sm:text-sm">
                   {VISA_NOTE}
                 </p>
               </div>
             )}
 
+            <Divider variant="dashed" className="!px-0 mt-14" />
+
             {/* CTA block */}
-            <div className="reveal mt-14 flex flex-col gap-4 rounded-2xl border border-ocean-900/10 bg-white p-6 sm:p-8">
-              <div>
-                <h3 className="font-display text-xl text-ocean-900 sm:text-2xl">
-                  Ready to plan your {destination.name} trip?
-                </h3>
-                <p className="mt-1.5 text-sm text-ocean-800/70">
-                  Request a quote and our team will call you back, or book and
-                  pay online once booking opens.
-                </p>
-              </div>
-              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                <ButtonLink href={quoteHref} variant="primary" size="md">
-                  Request a Quote
-                </ButtonLink>
-                <ButtonLink href={bookHref} variant="outline" size="md">
-                  Book Now
-                </ButtonLink>
-                {whatsappHref ? (
-                  <a
-                    href={whatsappHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold text-ocean-900 underline-offset-4 hover:underline sm:px-6 sm:py-3.5"
-                  >
-                    Chat on WhatsApp
-                  </a>
-                ) : null}
-              </div>
-              <p className="text-xs leading-relaxed text-ocean-800/75">
+            <div className="reveal-settle mt-10">
+              <Ticket
+                stubHeight={whatsappHref ? "15rem" : "11.5rem"}
+                ticketClassName="[--cut:62%]"
+                main={
+                  <div className="p-6 sm:p-8">
+                    <h3 className="font-display text-xl text-ocean-900 sm:text-2xl">
+                      Ready to plan your {destination.name} trip?
+                    </h3>
+                    <p className="mt-1.5 text-sm text-ocean-800/80">
+                      Request a quote and our team will call you back, or book and
+                      pay online once booking opens.
+                    </p>
+              <p className="mt-5 text-xs leading-relaxed text-ocean-800/80">
                 Payment terms and cancellation charges are in our{" "}
                 <Link href="/terms" className="font-medium underline underline-offset-2">
                   Terms &amp; Conditions
@@ -293,105 +293,110 @@ export default async function DestinationPage({
                 </Link>
                 .
               </p>
+                  </div>
+                }
+                stub={
+                  <div className="flex h-full flex-col justify-center gap-3 p-4 sm:p-5">
+                    <ButtonLink href={quoteHref} variant="primary" size="md" className="w-full text-center">
+                      Request a Quote
+                    </ButtonLink>
+                    <ButtonLink href={bookHref} variant="outline" size="md" className="w-full text-center">
+                      Book Now
+                    </ButtonLink>
+                    {whatsappHref ? (
+                      <a
+                        href={whatsappHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex min-h-11 items-center justify-center text-sm font-semibold text-ocean-900 underline underline-offset-4"
+                      >
+                        Chat on WhatsApp
+                      </a>
+                    ) : null}
+                  </div>
+                }
+              />
             </div>
           </div>
 
           {/* Sticky price sidebar (lg+) */}
           <aside className="hidden lg:block">
-            <div className="lg:sticky lg:top-28 rounded-2xl border border-ocean-900/10 bg-white p-6 shadow-sm shadow-ocean-950/5">
-              {pkg ? (
-                <>
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-sand-600">
-                    From
-                  </p>
-                  <p className="mt-1 font-display text-3xl text-ocean-900">
-                    {formatINR(pkg.fromPrice)}
-                  </p>
-                  <p className="text-sm text-ocean-800/60">per person</p>
-
-                  <div className="mt-5 space-y-2 text-sm text-ocean-800/75">
-                    <p>
-                      {pkg.nights} Nights / {pkg.days} Days
+            <div className="lg:sticky lg:top-28">
+              <Ticket
+                stacked
+                stubHeight={whatsappHref ? "14.5rem" : "11rem"}
+                main={
+                  <div className="p-6">
+                    {pkg ? (
+                      <>
+                        <p className="ticket-label">From</p>
+                        <p className="mt-1 font-display text-3xl text-ocean-900">{formatINR(pkg.fromPrice)}</p>
+                        <p className="ticket-label">Per person</p>
+                        <div className="mt-5 space-y-3 text-sm text-ocean-900">
+                          <div>
+                            <p className="ticket-label">Duration</p>
+                            <p>{formatStay(pkg.nights, pkg.days)}</p>
+                          </div>
+                          <div>
+                            <p className="ticket-label">Best time</p>
+                            <p>{destination.bestTime}</p>
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <p className="font-display text-2xl text-ocean-900">Price on request</p>
+                        <div className="mt-3 space-y-3 text-sm text-ocean-900">
+                          <p>Itinerary shared on enquiry</p>
+                          <div>
+                            <p className="ticket-label">Best time</p>
+                            <p>{destination.bestTime}</p>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                    <p className="mt-5 text-[0.7rem] leading-relaxed text-ocean-800/80">
+                      {pkg
+                        ? "Indicative starting fare per person. Final pricing depends on travel dates, availability and departure city."
+                        : "Price and itinerary are shared once we know your dates, group size and budget."}
                     </p>
-                    <p>Best time: {destination.bestTime}</p>
                   </div>
-                </>
-              ) : (
-                <>
-                  <p className="font-display text-2xl text-ocean-900">
-                    Price on request
-                  </p>
-                  <div className="mt-3 space-y-2 text-sm text-ocean-800/75">
-                    <p>Itinerary shared on enquiry</p>
-                    <p>Best time: {destination.bestTime}</p>
+                }
+                stub={
+                  <div className="flex h-full flex-col justify-center gap-3 p-5">
+                    <ButtonLink href={quoteHref} variant="primary" size="md" className="w-full text-center">
+                      Request a Quote
+                    </ButtonLink>
+                    <ButtonLink href={bookHref} variant="outline" size="md" className="w-full text-center">
+                      Book Now
+                    </ButtonLink>
+                    {whatsappHref ? (
+                      <a
+                        href={whatsappHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex min-h-11 items-center justify-center text-sm font-semibold text-ocean-900 underline underline-offset-4"
+                      >
+                        Chat on WhatsApp
+                      </a>
+                    ) : null}
                   </div>
-                </>
-              )}
-
-              <div className="mt-6 flex flex-col gap-3">
-                <ButtonLink href={quoteHref} variant="primary" size="md">
-                  Request a Quote
-                </ButtonLink>
-                <ButtonLink href={bookHref} variant="outline" size="md">
-                  Book Now
-                </ButtonLink>
-                {whatsappHref ? (
-                  <a
-                    href={whatsappHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center rounded-full px-5 py-2 text-sm font-semibold text-ocean-900 underline-offset-4 hover:underline"
-                  >
-                    Chat on WhatsApp
-                  </a>
-                ) : null}
-              </div>
-
-              <p className="mt-5 text-[0.7rem] leading-relaxed text-ocean-800/50">
-                {pkg
-                  ? "Indicative starting fare per person. Final pricing depends on travel dates, availability and departure city."
-                  : "Price and itinerary are shared once we know your dates, group size and budget."}
-              </p>
+                }
+              />
             </div>
           </aside>
         </div>
 
+        <Divider variant="dashed" className="!px-0" />
+
         {/* Other destinations */}
-        <div className="border-t border-ocean-900/10 py-14">
+        <div className="py-14">
           <h2 className="reveal font-display text-2xl text-ocean-900 sm:text-3xl">
             Other destinations
           </h2>
-          <div className="reveal mt-8 grid grid-cols-1 gap-5 sm:grid-cols-3">
+          <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {others.map((other) => (
-              <Link
-                key={other.slug}
-                href={`/destinations/${other.slug}`}
-                className="group flex flex-col overflow-hidden rounded-2xl border border-ocean-900/10 bg-white shadow-sm shadow-ocean-950/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-ocean-950/10"
-              >
-                <SmartImage
-                  src={other.images}
-                  alt={`${other.name}, ${other.country}`}
-                  className="aspect-[4/3] w-full"
-                  imageClassName="transition-transform duration-500 ease-out group-hover:scale-105"
-                  sizes="(max-width: 640px) 100vw, 33vw"
-                />
-                <div className="p-4">
-                  <h3 className="font-display text-lg text-ocean-900">
-                    <span className="mr-1">{other.flag}</span>
-                    {other.name}
-                  </h3>
-                  <p className="mt-1 text-xs font-medium text-ocean-800/60">
-                    {leadPackage(other) ? (
-                      <>
-                        from {formatINR(leadPackage(other)!.fromPrice)} &middot;{" "}
-                        {leadPackage(other)!.nights}N / {leadPackage(other)!.days}D
-                      </>
-                    ) : (
-                      "Price on request"
-                    )}
-                  </p>
-                </div>
-              </Link>
+              <DestinationTicket key={other.slug} destination={other} />
             ))}
           </div>
         </div>
@@ -405,7 +410,7 @@ export default async function DestinationPage({
         <div className="min-w-0">
           {pkg ? (
             <>
-              <p className="text-[0.65rem] font-semibold uppercase tracking-wide text-sand-600">
+              <p className="text-[0.65rem] font-semibold uppercase tracking-wide text-sand-700">
                 from
               </p>
               <p className="font-display text-lg leading-tight text-ocean-900">

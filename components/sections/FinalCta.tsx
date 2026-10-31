@@ -1,4 +1,8 @@
+import Parallax from "@/components/motion/Parallax";
+import ScrollScope from "@/components/motion/ScrollScope";
 import SmartImage from "@/components/SmartImage";
+import Divider from "@/components/ui/Divider";
+import Ticket from "@/components/ui/Ticket";
 import { ButtonLink } from "@/components/ui";
 import { EXPERIENCE_IMAGES } from "@/lib/data";
 import { addressLine, site, whatsappLink } from "@/lib/site";
@@ -7,62 +11,83 @@ const WHATSAPP_HREF = whatsappLink("Hi Yeto Holidays, I'd like to plan a holiday
 
 export default function FinalCta() {
   return (
-    <section
+    <ScrollScope
       id="contact"
-      data-scroll="through"
-      className="relative flex min-h-[60svh] w-full scroll-mt-24 items-center justify-center overflow-hidden"
+      range={[0.05, 0.5]}
+      className="relative isolate flex min-h-[85svh] w-full items-center overflow-hidden bg-ocean-900"
     >
-      <div className="fx-zoom-out absolute inset-0">
-        <SmartImage
-          src={EXPERIENCE_IMAGES.travellers}
-          alt="Travellers watching the sunset on a holiday"
-          className="h-full w-full"
-          sizes="100vw"
-          overlay="strong"
-        />
+      {/* Photo, 130 percent of the frame tall, moving at its own pace */}
+      <div className="absolute inset-0 overflow-hidden">
+        <Parallax speed={0.25} className="absolute inset-x-0 -inset-y-[15%]">
+          <SmartImage
+            src={EXPERIENCE_IMAGES.landscape}
+            alt=""
+            className="h-full w-full"
+            sizes="100vw"
+            overlay="soft"
+          />
+        </Parallax>
+      </div>
+      <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-ocean-950/60 via-transparent to-ocean-950/30" />
+
+      {/* Wave lines on the top and bottom edges of the photo */}
+      <div className="pointer-events-none absolute inset-x-0 top-6 z-10">
+        <Divider variant="wave" />
+      </div>
+      <div className="pointer-events-none absolute inset-x-0 bottom-14 z-10">
+        <Divider variant="wave" flip />
       </div>
 
-      <div className="reveal relative z-10 mx-auto flex max-w-2xl flex-col items-center px-5 py-20 text-center text-white sm:px-8">
-        <h2 className="font-display text-3xl leading-[1.1] tracking-tight sm:text-4xl lg:text-5xl">
-          Your next adventure is waiting.
-        </h2>
-        <p className="mt-4 max-w-md text-balance text-sm leading-relaxed text-white/80 sm:text-base">
-          Tell us where you want to go. We&apos;ll take care of the rest.
-        </p>
-
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-          {WHATSAPP_HREF ? (
-            <a
-              href={WHATSAPP_HREF}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-sand-400 px-6 py-3.5 text-sm font-semibold text-ocean-950 shadow-lg shadow-sand-500/25 transition-all duration-200 hover:bg-sand-300 active:scale-[0.98] sm:px-8 sm:py-4 sm:text-base"
-            >
-              WhatsApp Us
-            </a>
-          ) : null}
-          <ButtonLink href="/plan" variant="white" size="lg">
-            Plan My Holiday
-          </ButtonLink>
+      <div className="relative z-10 mx-auto w-full max-w-4xl px-5 py-32 sm:px-8">
+        <div className="cta-rise">
+          <Ticket
+            stubHeight="9.5rem"
+            ticketClassName="[--cut:68%]"
+            main={
+              <div className="p-6 sm:p-8">
+                <h2 className="font-display text-3xl leading-[1.1] tracking-tight text-ocean-900 sm:text-4xl">
+                  <span className="reveal-mask">
+                    <span className="reveal-mask-line">Not sure where to go yet?</span>
+                  </span>
+                </h2>
+                <p className="mt-4 max-w-md text-base leading-relaxed text-ocean-800/80">
+                  Tell us your dates, your budget and who is travelling. We will
+                  suggest a few options.
+                </p>
+                <div className="mt-6 border-t-2 border-dashed border-ocean-900/20 pt-4 text-sm text-ocean-800/80">
+                  <p className="ticket-label">Our office</p>
+                  <p className="mt-1">{addressLine}</p>
+                  {site.contact.email ? (
+                    <p className="mt-2">
+                      Or write to us at{" "}
+                      <a href={`mailto:${site.contact.email}`} className="underline underline-offset-2">
+                        {site.contact.email}
+                      </a>
+                    </p>
+                  ) : null}
+                </div>
+              </div>
+            }
+            stub={
+              <div className="flex h-full flex-col items-center justify-center gap-3 p-4 sm:p-5">
+                <ButtonLink href="/plan" variant="primary" size="md" className="w-full text-center">
+                  Plan my holiday
+                </ButtonLink>
+                {WHATSAPP_HREF ? (
+                  <a
+                    href={WHATSAPP_HREF}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex min-h-11 items-center text-sm font-semibold text-ocean-900 underline underline-offset-4"
+                  >
+                    WhatsApp us
+                  </a>
+                ) : null}
+              </div>
+            }
+          />
         </div>
-
-        {site.contact.email ? (
-          <p className="mt-6 text-xs text-white/60">
-            Or write to us at{" "}
-            <a
-              href={`mailto:${site.contact.email}`}
-              className="underline underline-offset-2"
-            >
-              {site.contact.email}
-            </a>
-          </p>
-        ) : null}
-        <p
-          className={`text-xs text-white/60 ${site.contact.email ? "mt-2" : "mt-6"}`}
-        >
-          Visit us: {addressLine}
-        </p>
       </div>
-    </section>
+    </ScrollScope>
   );
 }

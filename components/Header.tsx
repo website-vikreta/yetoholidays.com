@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useState } from "react";
-import { ButtonLink } from "@/components/ui";
+import { ArrowRight, ButtonLink } from "@/components/ui";
 import Logo from "@/components/Logo";
 import { whatsappDisplay, whatsappLink } from "@/lib/site";
 
@@ -14,10 +14,10 @@ const SOLID_HEADER_PATHS = ["/privacy", "/terms", "/cancellation-policy"];
 
 const NAV_LINKS = [
   { label: "Destinations", href: "/destinations" },
-  { label: "Tours", href: "/#tours" },
-  { label: "Experiences", href: "/#experiences" },
+  { label: "Group tours", href: "/#tours" },
+  { label: "Honeymoons", href: "/#honeymoons" },
   { label: "Corporate", href: "/#corporate" },
-  { label: "About Us", href: "/#about" },
+  { label: "About", href: "/#about" },
 ];
 
 function Wordmark({ light }: { light: boolean }) {
@@ -59,6 +59,7 @@ function MenuIcon({ open }: { open: boolean }) {
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
   const menuId = useId();
   const pathname = usePathname();
@@ -67,11 +68,25 @@ export default function Header() {
     // Coalesce scroll events into one read per frame; reading scrollY straight
     // from the handler forces layout on every event during a fast scroll.
     let frame = 0;
+    let anchor = window.scrollY; // last position where the direction was decided
     const onScroll = () => {
       if (frame) return;
       frame = requestAnimationFrame(() => {
         frame = 0;
-        setScrolled(window.scrollY > 24);
+        const y = window.scrollY;
+        setScrolled(y > 80);
+        // Hide when scrolling down, return when scrolling up. The 12px
+        // threshold stops it flickering on small jitters.
+        if (y <= 80) {
+          setHidden(false);
+          anchor = y;
+        } else if (y - anchor > 12) {
+          setHidden(true);
+          anchor = y;
+        } else if (anchor - y > 12) {
+          setHidden(false);
+          anchor = y;
+        }
       });
     };
     onScroll();
@@ -103,14 +118,12 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-        solid
-          ? "bg-white/90 shadow-sm shadow-ocean-950/5 backdrop-blur-md"
-          : "bg-transparent"
-      }`}
+      className={`fixed inset-x-0 top-0 z-50 transition-[transform,background-color,box-shadow] duration-300 ${
+        solid ? "bg-ocean-900 shadow-lg shadow-ocean-950/25" : "bg-transparent"
+      } ${hidden && !open ? "-translate-y-full" : "translate-y-0"}`}
     >
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-5 py-4 sm:px-8 lg:py-5">
-        <Wordmark light={!solid} />
+        <Wordmark light />
 
         <nav
           aria-label="Primary"
@@ -120,25 +133,21 @@ export default function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className={`group relative text-sm font-medium transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sand-400 ${
-                solid ? "text-ocean-900" : "text-white"
-              }`}
+              className="group relative text-sm font-medium transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sand-400 text-white"
             >
               {link.label}
               <span
                 aria-hidden
-                className={`absolute -bottom-1 left-0 h-px w-0 transition-all duration-300 group-hover:w-full ${
-                  solid ? "bg-ocean-900" : "bg-white"
-                }`}
+                className={`absolute -bottom-1 left-0 h-px w-0 transition-all duration-300 group-hover:w-full bg-white`}
               />
             </Link>
           ))}
         </nav>
 
         <div className="hidden lg:block">
-          <ButtonLink href="/plan" variant={solid ? "primary" : "white"} size="sm">
-            Plan My Trip
-            <span aria-hidden>→</span>
+          <ButtonLink href="/plan" variant="white" size="sm">
+            Plan my trip
+            <ArrowRight />
           </ButtonLink>
         </div>
 
@@ -148,9 +157,7 @@ export default function Header() {
           aria-controls={menuId}
           aria-label={open ? "Close menu" : "Open menu"}
           onClick={() => setOpen((v) => !v)}
-          className={`flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sand-400 lg:hidden ${
-            solid ? "text-ocean-900" : "text-white"
-          }`}
+          className="flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sand-400 lg:hidden text-white"
         >
           <MenuIcon open={open} />
         </button>
@@ -195,8 +202,8 @@ export default function Header() {
             onClick={() => setOpen(false)}
             className="w-full"
           >
-            Plan My Trip
-            <span aria-hidden>→</span>
+            Plan my trip
+            <ArrowRight />
           </ButtonLink>
           {whatsappHref ? (
             <a
@@ -206,7 +213,7 @@ export default function Header() {
               onClick={() => setOpen(false)}
               className="flex min-h-[44px] items-center justify-center gap-2 text-sm font-semibold text-ocean-800 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sand-400"
             >
-              WhatsApp us — {whatsappDisplay}
+              WhatsApp us: {whatsappDisplay}
             </a>
           ) : null}
         </div>

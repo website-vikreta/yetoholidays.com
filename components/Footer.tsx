@@ -4,10 +4,10 @@ import { destinations } from "@/lib/data";
 import { addressLine, site, whatsappDisplay, whatsappLink } from "@/lib/site";
 
 const COMPANY_LINKS = [
-  { label: "About Us", href: "/#about" },
-  { label: "Why Yeto", href: "/#about" },
-  { label: "Corporate Travel", href: "/#corporate" },
-  { label: "Plan My Trip", href: "/plan" },
+  { label: "About", href: "/#about" },
+  { label: "Group tours", href: "/#tours" },
+  { label: "Corporate travel", href: "/#corporate" },
+  { label: "Plan my trip", href: "/plan" },
   { label: "Contact", href: "/#contact" },
 ];
 
@@ -75,20 +75,28 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-ocean-950 text-white">
-      <div className="mx-auto w-full max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
+    <footer className="relative bg-ocean-950 text-white">
+      {/* Wave edge on top, overlapping the closing call to action above */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-full h-10 text-ocean-950 sm:h-12">
+        <svg focusable="false" viewBox="0 0 1440 48" preserveAspectRatio="none" className="block h-full w-full fill-current">
+          <path d="M0 26 C240 2 480 50 720 26 S1200 2 1440 26 V48 H0 Z" />
+        </svg>
+      </div>
+      {/* Faint outlined wave lines */}
+      <div aria-hidden="true" className="footer-waves pointer-events-none absolute inset-0 overflow-hidden" />
+      <div className="relative mx-auto w-full max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
         <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.1fr]">
           <div className="max-w-sm">
-            <Link href="/" aria-label="Yeto Holidays home" className="inline-flex">
-              <Logo light className="h-10" />
-            </Link>
-            <p className="mt-5 font-display text-lg text-sand-100">
-              A destination begins with a journey.
-            </p>
-            <p className="mt-3 text-sm leading-relaxed text-white/60">
-              We plan international and domestic holidays, honeymoons, group
-              departures and corporate offsites down to the last transfer — so all you have
-              to do is show up and enjoy the trip.
+            <div className="flex items-center gap-4">
+              <Link href="/" aria-label="Yeto Holidays home" className="inline-flex shrink-0">
+                <Logo light className="h-10" />
+              </Link>
+              <p className="font-display text-sm italic text-sand-100">{site.tagline}</p>
+            </div>
+            <p className="mt-5 text-sm leading-relaxed text-white/60">
+              Yeto Holidays plans international and domestic holidays,
+              honeymoons, group tours and corporate trips from our office in
+              Dharampeth, Nagpur.
             </p>
           </div>
 
@@ -150,7 +158,7 @@ export default function Footer() {
                     rel="noopener noreferrer"
                     className="transition-colors duration-200 hover:text-white"
                   >
-                    WhatsApp — {whatsappDisplay}
+                    WhatsApp: {whatsappDisplay}
                   </a>
                 </li>
               ) : null}
@@ -160,7 +168,7 @@ export default function Footer() {
                     href={`tel:${site.contact.phone.replace(/[^\d+]/g, "")}`}
                     className="transition-colors duration-200 hover:text-white"
                   >
-                    Call — {site.contact.phone}
+                    Call: {site.contact.phone}
                   </a>
                 </li>
               ) : null}
@@ -196,7 +204,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-white/10">
+      <div className="relative border-t border-white/10">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-5 py-6 text-xs text-white/50 sm:flex-row sm:items-center sm:justify-between sm:px-8">
           <div className="space-y-1">
             <p>
@@ -225,10 +233,9 @@ export default function Footer() {
           </div>
         </div>
         <p className="mx-auto w-full max-w-6xl px-5 pb-6 text-[0.7rem] leading-relaxed text-white/60 sm:px-8">
-          Package prices shown are indicative starting fares per person and
-          vary by travel date, availability and departure city. Visa approval
-          is decided by the embassy, not by us, and travel insurance is
-          advised. We cannot guarantee a visa outcome. Registered office:{" "}
+          Prices are starting fares per person and change with travel date,
+          availability and departure city. Visa decisions are made by the
+          embassy, and travel insurance is recommended. Registered office:{" "}
           {addressLine}.
         </p>
       </div>

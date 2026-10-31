@@ -3,7 +3,7 @@ import type { ComponentProps, ReactNode } from "react";
 
 export function Eyebrow({ children }: { children: ReactNode }) {
   return (
-    <span className="inline-block text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-sand-600">
+    <span className="inline-block text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-sand-700">
       {children}
     </span>
   );
@@ -32,12 +32,14 @@ export function SectionHeading({
           tone === "light" ? "text-white" : "text-ocean-900"
         }`}
       >
-        {title}
+        <span className="reveal-mask">
+          <span className="reveal-mask-line">{title}</span>
+        </span>
       </h2>
       {intro ? (
         <p
           className={`mt-4 text-[0.975rem] leading-relaxed sm:text-lg ${
-            tone === "light" ? "text-white/75" : "text-ocean-800/70"
+            tone === "light" ? "text-white/75" : "text-ocean-800/80"
           }`}
         >
           {intro}
